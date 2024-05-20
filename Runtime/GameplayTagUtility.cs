@@ -5,20 +5,19 @@ namespace BandoWare.GameplayTags
 {
    internal class GameplayTagUtility
    {
-      public static void WarnNotExplictlyAddedTagRemoval(GameplayTag gameplayTag)
+      internal static void WarnNotExplictlyAddedTagRemoval(GameplayTag gameplayTag)
       {
          Debug.LogWarningFormat("Attempted to remove tag {0} from tag count container," +
             " but it is not explicitly added to the container.", gameplayTag);
       }
 
-      public static void WarnNotExplicitTagsRemoval(GameplayTagEnumerator tags)
+      internal static void WarnNotExplicitTagsRemoval(GameplayTagEnumerator tags)
       {
          foreach (GameplayTag tag in tags)
          {
             WarnNotExplictlyAddedTagRemoval(tag);
          }
       }
-
 
       /// <summary>
       /// Return the name of every tag in the hierarchy of the given tag. For

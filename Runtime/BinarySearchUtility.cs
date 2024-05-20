@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace BandoWare.GameplayTags
 {
-   public class BinarySearchUtility
+   internal class BinarySearchUtility
    {
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static int Search(List<int> arr, int value)
