@@ -1,0 +1,22 @@
+{
+    "name": "BandoWare.GameplayTags.Editor",
+    "rootNamespace": "",
+    "references": [
+        "BandoWare.GameplayAbilities",
+        "BandoWare.Core",
+        "BandoWare.Core.Editor",
+        "BandoWare.DataTable",
+        "BandoWare.GameplayTags"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
