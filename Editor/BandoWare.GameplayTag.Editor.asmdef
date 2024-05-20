@@ -2,10 +2,6 @@
     "name": "BandoWare.GameplayTags.Editor",
     "rootNamespace": "",
     "references": [
-        "BandoWare.GameplayAbilities",
-        "BandoWare.Core",
-        "BandoWare.Core.Editor",
-        "BandoWare.DataTable",
         "BandoWare.GameplayTags"
     ],
     "includePlatforms": [

@@ -1,5 +1,4 @@
-﻿using BandoWare.Editor;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 

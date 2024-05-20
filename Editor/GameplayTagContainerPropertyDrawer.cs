@@ -1,5 +1,4 @@
-﻿using BandoWare.Editor;
-using BandoWare.GameplayTags;
+﻿using BandoWare.GameplayTags;
 using BandoWare.GameplayTags.Editor;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -93,11 +92,24 @@ namespace BandoWare.GameplayAbilities.Editor
                tagRect.y = tagRect.yMax;
             }
 
-            CoreEditorUtils.DrawSolidBorder(tagsRect, new Color(1, 1, 1, 0.15f));
+            DrawOutline(tagsRect, new Color(1, 1, 1, 0.15f));
          }
 
          EditorGUI.indentLevel = oldIndentLevel;
          EditorGUI.EndProperty();
+      }
+
+      public static void DrawOutline(Rect rect, Color color, float thickness = 1)
+      {
+         if (Event.current.type != EventType.Repaint)
+         {
+            return;
+         }
+
+         EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
+         EditorGUI.DrawRect(new Rect(rect.x, rect.y + rect.height - thickness, rect.width, thickness), color);
+         EditorGUI.DrawRect(new Rect(rect.x, rect.y + thickness, thickness, rect.height - 2 * thickness), color);
+         EditorGUI.DrawRect(new Rect(rect.x + rect.width - thickness, rect.y + thickness, thickness, rect.height - 2 * thickness), color);
       }
    }
 }
