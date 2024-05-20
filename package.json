@@ -1,0 +1,23 @@
+{
+    "name": "com.bandoware.gameplaytags",
+    "version": "0.1.0-beta",
+    "displayName": "Gameplay Tags",
+    "description": "A package to manage gameplay tags for your game.",
+    "unity": "2020.3",
+    "keywords": [
+      "gameplay",
+      "tags",
+      "bandoware",
+      "gameplaytagcontainer",
+      "gameplaytag",
+      "unreal",
+      "gameplayabilities",
+      "gameplay abilities"
+    ],
+    "author": {
+      "name": "Bandoware",
+      "url": "https://www.github.com/BandoWare"
+    },
+    "dependencies": {
+    }
+  }
