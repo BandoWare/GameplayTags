@@ -6,11 +6,14 @@ namespace BandoWare.GameplayTags
    [Serializable]
    public struct GameplayTagRequirements
    {
-      [SerializeField]
-      internal GameplayTagContainer m_ForbiddenTags;
+      public GameplayTagContainer ForbiddenTags => m_ForbiddenTags;
+      public GameplayTagContainer RequiredTags => m_RequiredTags;
 
       [SerializeField]
-      internal GameplayTagContainer m_RequiredTags;
+      private GameplayTagContainer m_ForbiddenTags;
+
+      [SerializeField]
+      private GameplayTagContainer m_RequiredTags;
 
       public bool IsEmpty
       {
@@ -38,19 +41,6 @@ namespace BandoWare.GameplayTags
          }
 
          return GameplayTagContainerUtility.HasAll(staticContainer, dynamicContainer, m_RequiredTags);
-      }
-   }
-
-   public static class GameplayTagRequirementsExtensionMethods
-   {
-      public static ref GameplayTagContainer GetForbiddenTags(ref this GameplayTagRequirements requirements)
-      {
-         return ref requirements.m_ForbiddenTags;
-      }
-
-      public static ref GameplayTagContainer GetRequiredTags(ref this GameplayTagRequirements requirements)
-      {
-         return ref requirements.m_RequiredTags;
       }
    }
 }
