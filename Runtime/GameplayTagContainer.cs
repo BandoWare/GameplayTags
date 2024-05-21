@@ -59,26 +59,71 @@ namespace BandoWare.GameplayTags
 
    public interface IGameplayTagContainer
    {
+      /// <summary>
+      /// Gets a value indicating whether this container is empty.
+      /// </summary>
       public bool IsEmpty { get; }
 
+      /// <summary>
+      /// Gets the count of explicit tags in this container.
+      /// Explicit tags are the tags that have been directly added to this container.
+      /// </summary>
       public int ExplicitTagCount { get; }
 
+      /// <summary>
+      /// Gets the total count of tags in this container, including implicit tags.
+      /// Implicit tags are tags that are indirectly included based on the hierarchy of explicit tags.
+      /// For example, if "ParentTag" is an implicit tag and "ParentTag.ChildTag" is an explicit tag,
+      /// then "ParentTag" will be counted as an implicit tag in this container.
+      /// </summary>
       public int TagCount { get; }
 
+      /// <summary>
+      /// Gets the indexes of tags in this container.
+      /// </summary>
       GameplayTagContainerIndexes Indexes { get; }
 
+      /// <summary>
+      /// Adds a tag to this container.
+      /// </summary>
+      /// <param name="gameplayTag">The tag to add.</param>
       public void AddTag(GameplayTag gameplayTag);
 
+      /// <summary>
+      /// Removes a tag from this container.
+      /// </summary>
+      /// <param name="gameplayTag">The tag to remove.</param>
       public void RemoveTag(GameplayTag gameplayTag);
 
+      /// <summary>
+      /// Gets an enumerator for all tags in this container.
+      /// </summary>
+      /// <returns>An enumerator for all tags in this container.</returns>
       public GameplayTagEnumerator GetTags();
 
+      /// <summary>
+      /// Gets an enumerator for the explicit tags in this container.
+      /// </summary>
+      /// <returns>An enumerator for the explicit tags in this container.</returns>
       public GameplayTagEnumerator GetExplicitTags();
 
+      /// <summary>
+      /// Adds tags from another container to this container.
+      /// </summary>
+      /// <typeparam name="T">The type of the other container.</typeparam>
+      /// <param name="other">The other container.</param>
       public void AddTags<T>(in T other) where T : IGameplayTagContainer;
 
+      /// <summary>
+      /// Removes tags from this container that are present in another container.
+      /// </summary>
+      /// <typeparam name="T">The type of the other container.</typeparam>
+      /// <param name="other">The other container.</param>
       public void RemoveTags<T>(in T other) where T : IGameplayTagContainer;
 
+      /// <summary>
+      /// Clears all tags from this container.
+      /// </summary>
       public void Clear();
    }
 
@@ -87,12 +132,16 @@ namespace BandoWare.GameplayTags
    [DebuggerDisplay("{DebbugerDisplay,nq}")]
    public class GameplayTagContainer : IGameplayTagContainer, ISerializationCallbackReceiver
    {
+      /// <inheritdoc />
       public bool IsEmpty => m_Indices.Explicit.Count == 0;
 
+      /// <inheritdoc />
       public int ExplicitTagCount => m_Indices.Explicit.Count;
 
+      /// <inheritdoc />
       public int TagCount => m_Indices.Implicit.Count;
 
+      /// <inheritdoc />
       public GameplayTagContainerIndexes Indexes => m_Indices;
 
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -101,19 +150,26 @@ namespace BandoWare.GameplayTags
 
       [SerializeField]
       private List<string> m_SerializedExplicitTags;
+
       private GameplayTagContainerIndexes m_Indices = new();
 
-      [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-      private string DebbugerDisplay => $"Count (Explicit, Total) = ({ExplicitTagCount}, {TagCount})";
-
+      /// <summary>
+      /// Default constructor.
+      /// </summary>
       public GameplayTagContainer()
       { }
 
+      /// <summary>
+      /// Initializes a new instance of the <see cref="GameplayTagContainer"/> class by copying tags from another container.
+      /// </summary>
       public GameplayTagContainer(IGameplayTagContainer other)
       {
          Copy(this, other);
       }
 
+      /// <summary>
+      /// Creates a clone of this container.
+      /// </summary>
       public GameplayTagContainer Clone()
       {
          GameplayTagContainer clone = new();
@@ -128,11 +184,24 @@ namespace BandoWare.GameplayTags
          return clone;
       }
 
+      /// <summary>
+      /// Copies tags from one container to another.
+      /// </summary>
+      /// <param name="dest">The destination container.</param>
+      /// <param name="src">The source container.</param>
       public static void Copy<T>(GameplayTagContainer dest, in T src) where T : IGameplayTagContainer
       {
          dest.m_Indices.CopyFrom(src.Indexes);
       }
 
+      /// <summary>
+      /// Creates a container that is the intersection of two other containers.
+      /// </summary>
+      /// <typeparam name="T">The type of the first container.</typeparam>
+      /// <typeparam name="U">The type of the second container.</typeparam>
+      /// <param name="lhs">The first container.</param>
+      /// <param name="rhs">The second container.</param>
+      /// <returns>A new <see cref="GameplayTagContainer"/> that contains the intersection of the two containers.</returns>
       public static GameplayTagContainer Intersection<T, U>(in T lhs, in U rhs) where T : IGameplayTagContainer where U : IGameplayTagContainer
       {
          GameplayTagContainer intersection = new();
@@ -140,6 +209,13 @@ namespace BandoWare.GameplayTags
          return intersection;
       }
 
+      /// <summary>
+      /// Adds the intersection of two containers to this container.
+      /// </summary>
+      /// <typeparam name="T">The type of the first container.</typeparam>
+      /// <typeparam name="U">The type of the second container.</typeparam>
+      /// <param name="lhs">The first container.</param>
+      /// <param name="rhs">The second container.</param>
       public void AddIntersection<T, U>(in T lhs, in U rhs) where T : IGameplayTagContainer where U : IGameplayTagContainer
       {
          static void OrderedListIntersection(List<int> a, List<int> b, List<int> dst)
@@ -188,6 +264,14 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <summary>
+      /// Creates a container that is the union of two other containers.
+      /// </summary>
+      /// <typeparam name="T">The type of the first container.</typeparam>
+      /// <typeparam name="U">The type of the second container.</typeparam>
+      /// <param name="lhs">The first container.</param>
+      /// <param name="rhs">The second container.</param>
+      /// <returns>A new <see cref="GameplayTagContainer"/> that contains the union of the two containers.</returns>
       public static GameplayTagContainer Union<T, U>(in T lhs, in U rhs) where T : IGameplayTagContainer where U : IGameplayTagContainer
       {
          static void OrderedListUnion(List<int> a, List<int> b, List<int> dst)
@@ -251,22 +335,30 @@ namespace BandoWare.GameplayTags
          return union;
       }
 
+      /// <summary>
+      /// Gets an enumerator for the explicit tags in this container.
+      /// </summary>
       public GameplayTagEnumerator GetExplicitTags()
       {
          return new GameplayTagEnumerator(m_Indices.Explicit);
       }
 
+      /// <summary>
+      /// Gets an enumerator for all tags in this container.
+      /// </summary>
       public GameplayTagEnumerator GetTags()
       {
          return new GameplayTagEnumerator(m_Indices.Implicit);
       }
 
+      /// <inheritdoc />
       public void Clear()
       {
          m_Indices.Clear();
          m_SerializedExplicitTags?.Clear();
       }
 
+      /// <inheritdoc />
       public void AddTag(GameplayTag tag)
       {
          GameplayTagContainerIndexes.Create(ref m_Indices);
@@ -280,6 +372,7 @@ namespace BandoWare.GameplayTags
          AddImplicitTagsFor(tag);
       }
 
+      /// <inheritdoc />
       public void AddTags<T>(in T container) where T : IGameplayTagContainer
       {
          foreach (GameplayTag tag in container.GetExplicitTags())
@@ -288,6 +381,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <inheritdoc />
       public void RemoveTag(GameplayTag tag)
       {
          if (!m_Indices.IsCreated)
@@ -306,6 +400,7 @@ namespace BandoWare.GameplayTags
          FillImplictTags();
       }
 
+      /// <inheritdoc />
       public void RemoveTags<T>(in T other) where T : IGameplayTagContainer
       {
          if (!m_Indices.IsCreated)
