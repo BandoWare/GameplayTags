@@ -77,7 +77,7 @@ namespace BandoWare.GameplayTags.Editor
          s_TempContent.tooltip = item.Tag.Description;
          if (GUI.Button(rect, s_TempContent, EditorStyles.label))
          {
-            m_TagNameProperty.stringValue = item.DisplayName;
+            m_TagNameProperty.stringValue = item.Tag.Name;
             m_TagNameProperty.serializedObject.ApplyModifiedProperties();
 
             m_OnSelectionChange?.Invoke();
