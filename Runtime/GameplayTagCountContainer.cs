@@ -93,6 +93,11 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      public void RemoveAllTagEventCallbacks()
+      {
+         m_TagDelegateInfoMap.Clear();
+      }
+
       private static ref OnTagCountChangedDelegate GetEventDelegate(ref GameplayTagDelegateInfo delegateInfo, GameplayTagEventType eventType)
       {
          switch (eventType)
@@ -282,9 +287,32 @@ namespace BandoWare.GameplayTags
 
       public void Clear()
       {
-         m_ExplicitTagCountMap.Clear();
-         m_TagCountMap.Clear();
-         m_Indices.Clear();
+         using (ListPool<DeferredTagChangedDelegate>.Get(out List<DeferredTagChangedDelegate> tagChangeDelegates))
+         {
+            foreach (GameplayTag tag in GetTags())
+            {
+               m_TagDelegateInfoMap.TryGetValue(tag, out GameplayTagDelegateInfo delegateInfo);
+
+               if (delegateInfo.OnNewOrRemove != null)
+               {
+                  tagChangeDelegates.Add(new DeferredTagChangedDelegate(tag, 0, delegateInfo.OnNewOrRemove));
+               }
+
+               if (OnAnyTagNewOrRemove != null)
+               {
+                  tagChangeDelegates.Add(new DeferredTagChangedDelegate(tag, 0, OnAnyTagNewOrRemove));
+               }
+            }
+
+            m_ExplicitTagCountMap.Clear();
+            m_TagCountMap.Clear();
+            m_Indices.Clear();
+
+            foreach (DeferredTagChangedDelegate del in tagChangeDelegates)
+            {
+               del.Execute();
+            }
+         }
       }
    }
 }
