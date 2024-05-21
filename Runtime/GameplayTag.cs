@@ -77,6 +77,21 @@ namespace BandoWare.GameplayTags
          m_RuntimeIndex = runtimeTagIndex;
       }
 
+      /// <inheritdoc cref="GameplayTagDefinition.IsChildOf(GameplayTag)"/>/>
+      public readonly bool IsParentOf(in GameplayTag tag)
+      {
+         ValidateIsNotNone();
+         return Definition.IsParentOf(tag);
+      }
+
+
+      /// <inheritdoc cref="GameplayTagDefinition.IsChildOf(GameplayTag)"/>/>
+      public readonly bool IsChildOf(in GameplayTag parentTag)
+      {
+         ValidateIsNotNone();
+         return Definition.IsChildOf(parentTag);
+      }
+
       public readonly bool Equals(GameplayTag other)
       {
          return m_RuntimeIndex == other.m_RuntimeIndex;

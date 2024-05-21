@@ -13,12 +13,24 @@ namespace BandoWare.GameplayTags
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public ReadOnlySpan<GameplayTagDefinition> Children => new(m_Children);
 
+      /// <summary>
+      /// The parent tags of this tag. If this tag is "A.B.C", the parent tags
+      /// will be ["A", "A.B", "A.B.C"]
+      /// </summary>
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public ReadOnlySpan<GameplayTag> ParentTags => new(m_ParentTags);
 
+      /// <summary>
+      /// The child tags of this tag. If this tag is "A.B.C", the child tags
+      /// will be ["A.B.C.D", "A.B.C.E"]
+      /// </summary>
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public ReadOnlySpan<GameplayTag> ChildTags => new(m_ChildTags);
 
+      /// <summary>
+      /// The tags in the hierarchy of this tag. If this tag is "A.B.C", the
+      /// hierarchy tags will be ["A", "A.B", "A.B.C"]
+      /// </summary>
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public ReadOnlySpan<GameplayTag> HierarchyTags => new(m_HierarchyTags);
 
@@ -54,6 +66,61 @@ namespace BandoWare.GameplayTags
          Label = GameplayTagUtility.GetLabel(name);
          HierarchyLevel = GameplayTagUtility.GetHeirarchyLevelFromName(name);
       }
+
+      /// <summary>
+      /// Returns true if this tag is a child of the given tag.
+      /// </summary>
+      /// <param name="tag">The tag to check if this tag is a child of.</param>
+      public bool IsChildOf(GameplayTag tag)
+      {
+         if (RuntimeIndex <= tag.RuntimeIndex)
+         {
+            return false;
+         }
+
+         if (m_ParentTags.Length > 1 && tag.RuntimeIndex < m_ParentTags[0].RuntimeIndex)
+         {
+            return false;
+         }
+
+         for (int i = 0; i < m_ParentTags.Length; i++)
+         {
+            if (m_ParentTags[i] == tag)
+            {
+               return true;
+            }
+         }
+
+         return false;
+      }
+
+      /// <summary>
+      /// Returns true if this tag is a parent of the given tag.
+      /// </summary>
+      /// <param name="tag">The tag to check if this tag is a parent of.</param>
+      public bool IsParentOf(GameplayTag tag)
+      {
+         if (RuntimeIndex >= tag.RuntimeIndex)
+         {
+            return false;
+         }
+
+         if (m_ChildTags.Length > 1 && tag.RuntimeIndex > m_ChildTags[^1].RuntimeIndex)
+         {
+            return false;
+         }
+
+         for (int i = 0; i < m_ChildTags.Length; i++)
+         {
+            if (m_ChildTags[i] == tag)
+            {
+               return true;
+            }
+         }
+
+         return false;
+      }
+
 
       public void SetParent(GameplayTagDefinition parent)
       {
