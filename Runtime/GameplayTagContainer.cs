@@ -10,7 +10,7 @@ namespace BandoWare.GameplayTags
 {
    public struct GameplayTagContainerIndexes
    {
-      public bool IsCreated => Explicit != null && Implicit != null;
+      public readonly bool IsCreated => Explicit != null && Implicit != null;
 
       internal List<int> Explicit { get; private set; }
       internal List<int> Implicit { get; private set; }
