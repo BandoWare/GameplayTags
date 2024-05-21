@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -130,7 +132,7 @@ namespace BandoWare.GameplayTags
    [Serializable]
    [DebuggerTypeProxy(typeof(GameplayTagContainerDebugView))]
    [DebuggerDisplay("{DebbugerDisplay,nq}")]
-   public class GameplayTagContainer : IGameplayTagContainer, ISerializationCallbackReceiver
+   public class GameplayTagContainer : IGameplayTagContainer, ISerializationCallbackReceiver, IEnumerable<GameplayTag>
    {
       /// <inheritdoc />
       public bool IsEmpty => m_Indices.Explicit.Count == 0;
@@ -498,6 +500,26 @@ namespace BandoWare.GameplayTags
          }
 
          FillImplictTags();
+      }
+
+      /// <summary>
+      /// This method is implemented only to allow the use of collection initializer syntax.
+      /// It is hidden from IntelliSense to avoid cluttering the API.
+      /// </summary>
+      [EditorBrowsable(EditorBrowsableState.Never)]
+      public void Add(GameplayTag tag)
+      {
+         AddTag(tag);
+      }
+
+      public IEnumerator<GameplayTag> GetEnumerator()
+      {
+         return GetTags();
+      }
+
+      IEnumerator IEnumerable.GetEnumerator()
+      {
+         return GetEnumerator();
       }
    }
 
