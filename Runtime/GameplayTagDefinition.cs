@@ -54,8 +54,22 @@ namespace BandoWare.GameplayTags
 
       private GameplayTagDefinition[] m_Children;
 
+      /// <summary>
+      /// Default constructor to create a "None" tag definition.
+      /// </summary>
       private GameplayTagDefinition()
-      { }
+      {
+         TagName = "<None>";
+         Description = string.Empty;
+         Label = "None";
+         HierarchyLevel = 0;
+         RuntimeIndex = 0;
+         ParentTagDefinition = null;
+         m_ParentTags = Array.Empty<GameplayTag>();
+         m_ChildTags = Array.Empty<GameplayTag>();
+         m_HierarchyTags = Array.Empty<GameplayTag>();
+         m_Children = Array.Empty<GameplayTagDefinition>();
+      }
 
       public GameplayTagDefinition(string name, string description, GameplayTagFlags flags = GameplayTagFlags.None)
       {
@@ -65,6 +79,11 @@ namespace BandoWare.GameplayTags
 
          Label = GameplayTagUtility.GetLabel(name);
          HierarchyLevel = GameplayTagUtility.GetHeirarchyLevelFromName(name);
+      }
+
+      public static GameplayTagDefinition CreateNoneTagDefinition()
+      {
+         return new GameplayTagDefinition();
       }
 
       /// <summary>

@@ -10,18 +10,7 @@ namespace BandoWare.GameplayTags.Editor
    {
       public GameplayTag Tag => m_Tag;
 
-      public string DisplayName
-      {
-         get
-         {
-            if (Tag == GameplayTag.None)
-            {
-               return "<None>";
-            }
-
-            return Tag.Label;
-         }
-      }
+      public string DisplayName => Tag.Label;
 
       public bool IsIncluded { get; set; }
 

@@ -8,7 +8,7 @@ namespace BandoWare.GameplayTags
    [DebuggerDisplay("{m_Name,nq}")]
    public struct GameplayTag : IEquatable<GameplayTag>, ISerializationCallbackReceiver
    {
-      public static readonly GameplayTag None = new() { m_RuntimeIndex = -1 };
+      public static readonly GameplayTag None = new() { m_RuntimeIndex = 0 };
 
       internal readonly int RuntimeIndex => m_RuntimeIndex;
 
@@ -119,7 +119,7 @@ namespace BandoWare.GameplayTags
 
       public override readonly string ToString()
       {
-         if (m_RuntimeIndex == -1)
+         if (m_RuntimeIndex == 0)
          {
             return "<None>";
          }
@@ -148,7 +148,7 @@ namespace BandoWare.GameplayTags
 
       void ISerializationCallbackReceiver.OnBeforeSerialize()
       {
-         if (m_RuntimeIndex == -1)
+         if (m_RuntimeIndex == 0)
          {
             m_Name = null;
             return;
@@ -166,7 +166,7 @@ namespace BandoWare.GameplayTags
 
       private readonly void ValidateIsNotNone()
       {
-         if (m_RuntimeIndex == -1)
+         if (m_RuntimeIndex == 0)
          {
             throw new InvalidOperationException("Cannot perform operation on GameplayTag.None.");
          }

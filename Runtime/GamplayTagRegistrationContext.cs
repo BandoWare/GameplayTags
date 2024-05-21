@@ -27,10 +27,17 @@ namespace BandoWare.GameplayTags
       public GameplayTagDefinition[] GenerateDefinitions()
       {
          RegisterMissingParents();
+         SortDefinitionsAlphabetically();
+         RegisterNoneTag();
          SetTagRuntimeIndices();
          FillParentsAndChildren();
 
          return m_Definition.ToArray();
+      }
+
+      private void RegisterNoneTag()
+      {
+         m_Definition.Insert(0, GameplayTagDefinition.CreateNoneTagDefinition());
       }
 
       private void RegisterMissingParents()
@@ -52,7 +59,10 @@ namespace BandoWare.GameplayTags
                RegisterTag(parentTagName, string.Empty, flags);
             }
          }
+      }
 
+      private void SortDefinitionsAlphabetically()
+      {
          m_Definition.Sort((a, b) => string.Compare(a.TagName, b.TagName, StringComparison.OrdinalIgnoreCase));
       }
 
@@ -60,12 +70,14 @@ namespace BandoWare.GameplayTags
       {
          Dictionary<GameplayTagDefinition, List<GameplayTagDefinition>> childrenLists = new();
 
-         foreach (GameplayTagDefinition definition in m_Definition)
+         // Skip the first tag definition which is the "None" tag
+         for (int i = 1; i < m_Definition.Count; i++)
          {
+            GameplayTagDefinition definition = m_Definition[i];
             string[] parentTagNames = GameplayTagUtility.GetHeirarchyNames(definition.TagName);
-            for (int i = 0; i < parentTagNames.Length - 1; i++)
+            for (int j = 0; j < parentTagNames.Length - 1; j++)
             {
-               string parentTagName = parentTagNames[i];
+               string parentTagName = parentTagNames[j];
                GameplayTagDefinition parentDefinition = m_TagsByName[parentTagName];
                if (!childrenLists.TryGetValue(parentDefinition, out List<GameplayTagDefinition> children))
                {

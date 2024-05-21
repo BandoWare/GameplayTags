@@ -78,7 +78,13 @@ namespace BandoWare.GameplayTags
          }
 
          s_TagsDefinitions = context.GenerateDefinitions();
-         s_Tags = Enumerable.ToArray(s_TagsDefinitions.Select(definition => definition.Tag));
+
+         // Skip the first tag definition which is the "None" tag.
+         IEnumerable<GameplayTag> tags = s_TagsDefinitions
+            .Select(definition => definition.Tag)
+            .Skip(1);
+
+         s_Tags = Enumerable.ToArray(tags);
          foreach (GameplayTagDefinition definition in s_TagsDefinitions)
          {
             s_TagDefinitionsByName[definition.TagName] = definition;

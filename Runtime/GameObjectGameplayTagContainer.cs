@@ -7,6 +7,9 @@ namespace BandoWare.GameplayTags
       public GameplayTagCountContainer GameplayTagContainer => m_GameplayTagContainer;
 
       [SerializeField]
+      private GameplayTag m_Tag;
+
+      [SerializeField]
       private GameplayTagContainer m_PersistentTags;
 
       private GameplayTagCountContainer m_GameplayTagContainer;
