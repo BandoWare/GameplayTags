@@ -50,7 +50,7 @@ namespace BandoWare.GameplayTags
          Implicit.Clear();
       }
 
-      internal readonly void CopyFrom(in GameplayTagContainerIndexes other)
+      internal readonly void CopyTo(in GameplayTagContainerIndexes other)
       {
          other.Clear();
          other.Add(this);
@@ -179,7 +179,7 @@ namespace BandoWare.GameplayTags
             return clone;
          }
 
-         clone.m_Indices.CopyFrom(m_Indices);
+         clone.m_Indices.CopyTo(m_Indices);
 
          return clone;
       }
@@ -191,7 +191,7 @@ namespace BandoWare.GameplayTags
       /// <param name="src">The source container.</param>
       public static void Copy<T>(GameplayTagContainer dest, in T src) where T : IGameplayTagContainer
       {
-         dest.m_Indices.CopyFrom(src.Indexes);
+         dest.m_Indices.CopyTo(src.Indexes);
       }
 
       /// <summary>
