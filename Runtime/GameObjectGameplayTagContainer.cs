@@ -5,10 +5,7 @@ namespace BandoWare.GameplayTags
    public class GameObjectGameplayTagContainer : MonoBehaviour
    {
       public GameplayTagCountContainer GameplayTagContainer => m_GameplayTagContainer;
-
-      [SerializeField]
-      private GameplayTag m_Tag;
-
+      
       [SerializeField]
       private GameplayTagContainer m_PersistentTags;
 
