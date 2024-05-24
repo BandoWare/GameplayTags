@@ -218,7 +218,7 @@ namespace BandoWare.GameplayTags
       /// <typeparam name="U">The type of the second container.</typeparam>
       /// <param name="lhs">The first container.</param>
       /// <param name="rhs">The second container.</param>
-      public void AddIntersection<T, U>(in T lhs, in U rhs) where T : IGameplayTagContainer where U : IGameplayTagContainer
+      private void AddIntersection<T, U>(in T lhs, in U rhs) where T : IGameplayTagContainer where U : IGameplayTagContainer
       {
          static void OrderedListIntersection(List<int> a, List<int> b, List<int> dst)
          {
@@ -251,19 +251,8 @@ namespace BandoWare.GameplayTags
             return;
          }
 
-         if (lhs.IsEmpty)
-         {
-            m_Indices.Add(rhs.Indexes);
-         }
-         else if (rhs.IsEmpty)
-         {
-            m_Indices.Add(lhs.Indexes);
-         }
-         else
-         {
-            OrderedListIntersection(lhs.Indexes.Explicit, rhs.Indexes.Explicit, m_Indices.Explicit);
-            OrderedListIntersection(lhs.Indexes.Implicit, rhs.Indexes.Implicit, m_Indices.Implicit);
-         }
+         OrderedListIntersection(lhs.Indexes.Explicit, rhs.Indexes.Explicit, m_Indices.Explicit);
+         OrderedListIntersection(lhs.Indexes.Implicit, rhs.Indexes.Implicit, m_Indices.Implicit);
       }
 
       /// <summary>
