@@ -131,7 +131,7 @@ namespace BandoWare.GameplayTags
 
    [Serializable]
    [DebuggerTypeProxy(typeof(GameplayTagContainerDebugView))]
-   [DebuggerDisplay("{DebbugerDisplay,nq}")]
+   [DebuggerDisplay("{DebuggerDisplay,nq}")]
    public class GameplayTagContainer : IGameplayTagContainer, ISerializationCallbackReceiver, IEnumerable<GameplayTag>
    {
       /// <inheritdoc />
@@ -536,7 +536,7 @@ namespace BandoWare.GameplayTags
       }
 
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-      public GameplayTagContainer Container { get; set; }
+      public IGameplayTagContainer Container { get; set; }
 
       [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
       public Tag[] Tags
@@ -558,7 +558,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
-      public GameplayTagContainerDebugView(GameplayTagContainer container)
+      public GameplayTagContainerDebugView(IGameplayTagContainer container)
       {
          Container = container;
       }

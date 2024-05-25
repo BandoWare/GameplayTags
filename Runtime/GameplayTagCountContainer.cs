@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine.Pool;
 
 namespace BandoWare.GameplayTags
@@ -38,14 +39,20 @@ namespace BandoWare.GameplayTags
       public OnTagCountChangedDelegate OnNewOrRemove;
    }
 
+   [DebuggerTypeProxy(typeof(GameplayTagContainerDebugView))]
+   [DebuggerDisplay("{DebuggerDisplay,nq}")]
    public class GameplayTagCountContainer : IGameplayTagContainer
    {
+      /// <inheritdoc />
       public bool IsEmpty => m_Indices.Explicit.Count == 0;
 
+      /// <inheritdoc />
       public int ExplicitTagCount => m_Indices.Explicit.Count;
 
+      /// <inheritdoc />
       public int TagCount => m_Indices.Implicit.Count;
 
+      /// <inheritdoc />
       public GameplayTagContainerIndexes Indexes => m_Indices;
 
       public event OnTagCountChangedDelegate OnAnyTagNewOrRemove;
@@ -56,28 +63,46 @@ namespace BandoWare.GameplayTags
       private Dictionary<GameplayTag, int> m_ExplicitTagCountMap = new();
       private GameplayTagContainerIndexes m_Indices = GameplayTagContainerIndexes.Create();
 
+      /// <inheritdoc />
       public GameplayTagEnumerator GetExplicitTags()
       {
          return new GameplayTagEnumerator(m_Indices.Explicit);
       }
 
+      /// <inheritdoc />
       public GameplayTagEnumerator GetTags()
       {
          return new GameplayTagEnumerator(m_Indices.Implicit);
       }
 
+      /// <summary>
+      /// Gets the count of a specific tag.
+      /// </summary>
+      /// <param name="tag">The gameplay tag.</param>
+      /// <returns>The count of the specified tag.</returns>
       public int GetTagCount(GameplayTag tag)
       {
          m_TagCountMap.TryGetValue(tag, out int count);
          return count;
       }
 
+      /// <summary>
+      /// Gets the explicit count of a specific tag.
+      /// </summary>
+      /// <param name="tag">The gameplay tag.</param>
+      /// <returns>The explicit count of the specified tag.</returns>
       public int GetExplicitTagCount(GameplayTag tag)
       {
          m_ExplicitTagCountMap.TryGetValue(tag, out int count);
          return count;
       }
 
+      /// <summary>
+      /// Registers a callback for a tag event.
+      /// </summary>
+      /// <param name="tag">The gameplay tag.</param>
+      /// <param name="eventType">The type of event.</param>
+      /// <param name="callback">The callback to register.</param>
       public void RegisterTagEventCallback(GameplayTag tag, GameplayTagEventType eventType, OnTagCountChangedDelegate callback)
       {
          m_TagDelegateInfoMap.TryGetValue(tag, out GameplayTagDelegateInfo delegateInfo);
@@ -85,6 +110,12 @@ namespace BandoWare.GameplayTags
          m_TagDelegateInfoMap[tag] = delegateInfo;
       }
 
+      /// <summary>
+      /// Removes a callback for a tag event.
+      /// </summary>
+      /// <param name="tag">The gameplay tag.</param>
+      /// <param name="eventType">The type of event.</param>
+      /// <param name="callback">The callback to remove.</param>
       public void RemoveTagEventCallback(GameplayTag tag, GameplayTagEventType eventType, OnTagCountChangedDelegate callback)
       {
          if (m_TagDelegateInfoMap.TryGetValue(tag, out GameplayTagDelegateInfo delegateInfo))
@@ -94,6 +125,12 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <summary>
+      /// Removes a callback for a tag event.
+      /// </summary>
+      /// <param name="tag">The gameplay tag.</param>
+      /// <param name="eventType">The type of event.</param>
+      /// <param name="callback">The callback to remove.</param>
       public void RemoveAllTagEventCallbacks()
       {
          m_TagDelegateInfoMap.Clear();
@@ -113,6 +150,7 @@ namespace BandoWare.GameplayTags
          throw new ArgumentException(nameof(eventType));
       }
 
+      /// <inheritdoc />
       public void AddTag(GameplayTag tag)
       {
          using (ListPool<DeferredTagChangedDelegate>.Get(out List<DeferredTagChangedDelegate> delegates))
@@ -126,6 +164,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <inheritdoc />
       public void AddTags<T>(in T other) where T : IGameplayTagContainer
       {
          using (ListPool<DeferredTagChangedDelegate>.Get(out List<DeferredTagChangedDelegate> delegates))
@@ -187,6 +226,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <inheritdoc />
       public void RemoveTag(GameplayTag tag)
       {
          using (ListPool<DeferredTagChangedDelegate>.Get(out List<DeferredTagChangedDelegate> tagChangeDelegates))
@@ -200,6 +240,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <inheritdoc />
       public void RemoveTags<T>(in T other) where T : IGameplayTagContainer
       {
          using (ListPool<DeferredTagChangedDelegate>.Get(out List<DeferredTagChangedDelegate> tagChangeDelegates))
@@ -286,6 +327,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <inheritdoc />
       public void Clear()
       {
          using (ListPool<DeferredTagChangedDelegate>.Get(out List<DeferredTagChangedDelegate> tagChangeDelegates))
