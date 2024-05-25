@@ -59,7 +59,7 @@ namespace BandoWare.GameplayTags
       }
    }
 
-   public interface IGameplayTagContainer
+   public interface IGameplayTagContainer : IEnumerable<GameplayTag>
    {
       /// <summary>
       /// Gets a value indicating whether this container is empty.
@@ -218,7 +218,7 @@ namespace BandoWare.GameplayTags
       /// <typeparam name="U">The type of the second container.</typeparam>
       /// <param name="lhs">The first container.</param>
       /// <param name="rhs">The second container.</param>
-      private void AddIntersection<T, U>(in T lhs, in U rhs) where T : IGameplayTagContainer where U : IGameplayTagContainer
+      internal void AddIntersection<T, U>(in T lhs, in U rhs) where T : IGameplayTagContainer where U : IGameplayTagContainer
       {
          static void OrderedListIntersection(List<int> a, List<int> b, List<int> dst)
          {
