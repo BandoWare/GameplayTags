@@ -1,7 +1,5 @@
 using BandoWare.GameplayTags;
 using NUnit.Framework;
-using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -100,17 +98,6 @@ namespace BandoWare.GameplayAbilities.Tests
          return container;
       }
 
-      public void DisposeIfNeeded(params T[] containers)
-      {
-         foreach (T container in containers)
-         {
-            if (container is IDisposable disposable)
-            {
-               disposable.Dispose();
-            }
-         }
-      }
-
       [Test]
       public void HasTagExact()
       {
@@ -119,8 +106,6 @@ namespace BandoWare.GameplayAbilities.Tests
          Assert.IsTrue(container.HasTagExact("Test.A.B"));
          Assert.IsFalse(container.HasTagExact("Test.A"));
          Assert.IsFalse(container.HasTagExact("Test"));
-
-         DisposeIfNeeded(container);
       }
 
       [Test]
@@ -130,8 +115,6 @@ namespace BandoWare.GameplayAbilities.Tests
 
          Assert.IsTrue(container.HasTag("Test.A.B"));
          Assert.IsTrue(container.HasTag("Test"));
-
-         DisposeIfNeeded(container);
       }
 
       [Test]
@@ -148,8 +131,6 @@ namespace BandoWare.GameplayAbilities.Tests
          Assert.IsTrue(container.HasAll(c1));
          Assert.IsFalse(container.HasAll(c2));
          Assert.IsTrue(container.HasAll(c3));
-
-         DisposeIfNeeded(container, c0, c1, c2, c3);
       }
 
       [Test]
@@ -166,35 +147,43 @@ namespace BandoWare.GameplayAbilities.Tests
          Assert.IsTrue(container.HasAllExact(c1));
          Assert.IsFalse(container.HasAllExact(c2));
          Assert.IsFalse(container.HasAllExact(c3));
-
-         DisposeIfNeeded(container, c0, c1, c2, c3);
       }
 
       [Test]
       public void AddTag()
       {
-         T container = CreateContainer();
+         T container = CreateContainer("Test.D");
 
          container.AddTag("Test.A.B.C0");
 
-         Assert.IsTrue(container.HasTag("Test.A.B.C0"));
-         Assert.IsFalse(container.HasTag("Test.A.B.C1"));
+         CollectionAssert.AreEqual(new GameplayTag[]
+         {
+            "Test.A.B.C0", "Test.D"
+         }, container.GetExplicitTags());
 
-         DisposeIfNeeded(container);
+         CollectionAssert.AreEqual(new GameplayTag[]
+         {
+            "Test", "Test.A", "Test.A.B", "Test.A.B.C0", "Test.D"
+         }, container.GetTags());
       }
 
       [Test]
       public void AddTags()
       {
-         T container = CreateContainer();
+         T container = CreateContainer("Test.D");
          T other = CreateContainer("Test.A.B.C0", "Test.A.B.C1");
 
          container.AddTags(other);
 
-         Assert.IsTrue(container.HasTag("Test.A.B.C0"));
-         Assert.IsTrue(container.HasTag("Test.A.B.C1"));
+         CollectionAssert.AreEqual(new GameplayTag[]
+         {
+            "Test.A.B.C0", "Test.A.B.C1", "Test.D"
+         }, container.GetExplicitTags());
 
-         DisposeIfNeeded(container, other);
+         CollectionAssert.AreEqual(new GameplayTag[]
+         {
+            "Test", "Test.A", "Test.A.B", "Test.A.B.C0", "Test.A.B.C1", "Test.D"
+         }, container.GetTags());
       }
 
       [Test]
@@ -213,43 +202,22 @@ namespace BandoWare.GameplayAbilities.Tests
          LogAssert.Expect(LogType.Warning,
             $"Attempted to remove tag {tag} from tag count container," +
             " but it is not explicitly added to the container.");
-
-         DisposeIfNeeded(container);
-
       }
 
       [Test]
       public void GetTags()
       {
          T container = CreateContainer("Test.A", "Test.A.B.C0");
-
-         GameplayTagEnumerator enumerator = container.GetTags();
-         GameplayTag[] tags = enumerator.ToArray();
-
-         CollectionAssert.Contains(tags, "Test");
-         CollectionAssert.Contains(tags, "Test.A");
-         CollectionAssert.Contains(tags, "Test.A.B");
-         CollectionAssert.Contains(tags, "Test.A.B.C0");
-         CollectionAssert.DoesNotContain(tags, "Test.A.B.C1");
-
-         DisposeIfNeeded(container);
+         GameplayTag[] expectedTags = new GameplayTag[] { "Test", "Test.A", "Test.A.B", "Test.A.B.C0" };
+         CollectionAssert.AreEqual(expectedTags, container);
       }
 
       [Test]
       public void GetExplictTags()
       {
          T container = CreateContainer("Test.A", "Test.A.B.C0");
-
-         GameplayTagEnumerator enumerator = container.GetExplicitTags();
-         GameplayTag[] tags = enumerator.ToArray();
-
-         CollectionAssert.DoesNotContain(tags, "Test");
-         CollectionAssert.Contains(tags, "Test.A");
-         CollectionAssert.DoesNotContain(tags, "Test.A.B");
-         CollectionAssert.Contains(tags, "Test.A.B.C0");
-         CollectionAssert.DoesNotContain(tags, "Test.A.B.C1");
-
-         DisposeIfNeeded(container);
+         GameplayTag[] expectedTags = new GameplayTag[] { "Test.A", "Test.A.B.C0" };
+         CollectionAssert.AreEqual(expectedTags, container.GetExplicitTags());
       }
    }
 }
