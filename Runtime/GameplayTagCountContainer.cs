@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Pool;
 
@@ -313,6 +314,21 @@ namespace BandoWare.GameplayTags
                del.Execute();
             }
          }
+      }
+
+      public GameplayTagEnumerator GetEnumerator()
+      {
+         return new GameplayTagEnumerator(m_Indices.Implicit);
+      }
+
+      IEnumerator<GameplayTag> IEnumerable<GameplayTag>.GetEnumerator()
+      {
+         return GetEnumerator();
+      }
+
+      IEnumerator IEnumerable.GetEnumerator()
+      {
+         return GetEnumerator();
       }
    }
 }
