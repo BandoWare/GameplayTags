@@ -433,9 +433,20 @@ namespace BandoWare.GameplayTags
       private void FillImplictTags()
       {
          m_Indices.Implicit.Clear();
-         foreach (GameplayTag tag in new GameplayTagEnumerator(m_Indices.Explicit))
+
+         for (int i = 0; i < m_Indices.Explicit.Count; i++)
          {
-            AddImplicitTagsFor(tag);
+            GameplayTagDefinition definition = GameplayTagManager.GetDefinitionFromRuntimeIndex(m_Indices.Explicit[i]);
+
+            foreach (GameplayTag tag in definition.HierarchyTags)
+            {
+               if (m_Indices.Implicit.Count > 0 && m_Indices.Implicit[^-1] >= tag.RuntimeIndex)
+               {
+                  continue;
+               }
+
+               m_Indices.Implicit.Add(tag.RuntimeIndex);
+            }
          }
       }
 
