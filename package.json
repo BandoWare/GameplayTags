@@ -1,6 +1,6 @@
 {
     "name": "com.bandoware.gameplaytags",
-    "version": "0.1.0-beta.1",
+    "version": "0.1.0-beta.2",
     "displayName": "Gameplay Tags",
     "description": "A package to manage gameplay tags for your game.",
     "unity": "2020.3",
