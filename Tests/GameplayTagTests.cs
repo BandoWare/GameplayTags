@@ -35,5 +35,35 @@ namespace BandoWare.GameplayAbilities.Tests
          Assert.IsFalse(a0.Equals(b));
          Assert.IsTrue(a0.Equals("Test.A"));
       }
+
+      [Test]
+      public void IsParentTests()
+      {
+         GameplayTag test = "Test";
+         GameplayTag a = "Test.A";
+         GameplayTag b = "Test.A.B";
+
+         Assert.IsTrue(test.IsParentOf(a));
+         Assert.IsTrue(test.IsParentOf(b));
+         Assert.IsTrue(a.IsParentOf(b));
+         Assert.IsTrue(!b.IsParentOf(b));
+         Assert.IsTrue(!b.IsParentOf(a));
+         Assert.IsTrue(!b.IsParentOf(test));
+      }
+
+      [Test]
+      public void IsChildOfTests()
+      {
+         GameplayTag test = "Test";
+         GameplayTag a = "Test.A";
+         GameplayTag b = "Test.A.B";
+
+         Assert.IsTrue(a.IsChildOf(test));
+         Assert.IsTrue(b.IsChildOf(test));
+         Assert.IsTrue(b.IsChildOf(a));
+         Assert.IsTrue(!b.IsChildOf(b));
+         Assert.IsTrue(!a.IsChildOf(b));
+         Assert.IsTrue(!test.IsChildOf(b));
+      }
    }
 }
