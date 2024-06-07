@@ -8,7 +8,7 @@ namespace BandoWare.GameplayTags
       {
          if (containerA.IsEmpty && containerB.IsEmpty)
          {
-            return other.IsEmpty;
+            return true;
          }
 
          if (containerA.IsEmpty)
@@ -35,7 +35,7 @@ namespace BandoWare.GameplayTags
       {
          if (containerA.IsEmpty && containerB.IsEmpty)
          {
-            return other.IsEmpty;
+            return true;
          }
 
          if (containerA.IsEmpty)
