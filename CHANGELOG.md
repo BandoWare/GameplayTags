@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `GetParentTags` and `GetChildTags` to `IGameplayTagContainer`.
+
+### Fixed
+
 - Fixed `GameplayTagContainerUtility.HasAll{Exact}` logic.
+
 
 ## [0.0.1-beta.2] - 2023-06-06
 

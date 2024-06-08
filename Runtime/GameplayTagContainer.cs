@@ -117,6 +117,34 @@ namespace BandoWare.GameplayTags
       public void AddTags<T>(in T other) where T : IGameplayTagContainer;
 
       /// <summary>
+      /// Gets the parent tags of a tag in this container.
+      /// </summary>
+      /// <param name="tag">The tag to get the parent tags of.</param>
+      /// <param name="parentTags">The list to populate with the parent tags.</param>
+      public void GetParentTags(GameplayTag tag, List<GameplayTag> parentTags);
+
+      /// <summary>
+      /// Gets the child tags of a tag in this container.
+      /// </summary>
+      /// <param name="tag">The tag to get the child tags of.</param>
+      /// <param name="childTags">The list to populate with the child tags.</param>
+      public void GetChildTags(GameplayTag tag, List<GameplayTag> childTags);
+
+      /// <summary>
+      /// Gets the explicit parent tags of a tag in this container.
+      /// </summary>
+      /// <param name="tag">The tag to get the explicit parent tags of.</param>
+      ///<param name = "parentTags" > The list to populate with the explicit parent tags.</param>
+      public void GetExplicitParentTags(GameplayTag tag, List<GameplayTag> parentTags);
+
+      /// <summary>
+      /// Gets the explicit child tags of a tag in this container.
+      /// </summary>
+      /// <param name="tag"></param>
+      /// <param name="childTags"></param>
+      public void GetExplicitChildTags(GameplayTag tag, List<GameplayTag> childTags);
+
+      /// <summary>
       /// Removes tags from this container that are present in another container.
       /// </summary>
       /// <typeparam name="T">The type of the other container.</typeparam>
@@ -340,6 +368,30 @@ namespace BandoWare.GameplayTags
       public GameplayTagEnumerator GetTags()
       {
          return new GameplayTagEnumerator(m_Indices.Implicit);
+      }
+
+      /// <inheritdoc />
+      public void GetParentTags(GameplayTag tag, List<GameplayTag> parentTags)
+      {
+         GameplayTagContainerUtility.GetParentTags(m_Indices.Implicit, tag, parentTags);
+      }
+
+      /// <inheritdoc />
+      public void GetChildTags(GameplayTag tag, List<GameplayTag> childTags)
+      {
+         GameplayTagContainerUtility.GetChildTags(m_Indices.Implicit, tag, childTags);
+      }
+
+      /// <inheritdoc />
+      public void GetExplicitParentTags(GameplayTag tag, List<GameplayTag> parentTags)
+      {
+         GameplayTagContainerUtility.GetParentTags(m_Indices.Explicit, tag, parentTags);
+      }
+
+      /// <inheritdoc />
+      public void GetExplicitChildTags(GameplayTag tag, List<GameplayTag> childTags)
+      {
+         GameplayTagContainerUtility.GetChildTags(m_Indices.Explicit, tag, childTags);
       }
 
       /// <inheritdoc />

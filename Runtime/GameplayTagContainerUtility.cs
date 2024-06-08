@@ -1,4 +1,5 @@
-﻿using UnityEngine.Pool;
+﻿using System.Collections.Generic;
+using UnityEngine.Pool;
 
 namespace BandoWare.GameplayTags
 {
@@ -55,6 +56,50 @@ namespace BandoWare.GameplayTags
             intersection.Clear();
 
             return hasAllExact;
+         }
+      }
+
+      internal static void GetParentTags(List<int> tagIndices, GameplayTag tag, List<GameplayTag> parentTags)
+      {
+         int index = tagIndices.BinarySearch(tag.RuntimeIndex);
+         if (index < 0)
+         {
+            index = ~index;
+         }
+
+         for (int i = index - 1; i >= 0; i--)
+         {
+            GameplayTagDefinition otherTagDefinition
+               = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
+
+            if (!otherTagDefinition.IsParentOf(tag))
+            {
+               break;
+            }
+
+            parentTags.Add(otherTagDefinition.Tag);
+         }
+      }
+
+      internal static void GetChildTags(List<int> tagIndices, GameplayTag tag, List<GameplayTag> childTags)
+      {
+         int index = tagIndices.BinarySearch(tag.RuntimeIndex);
+         if (index < 0)
+         {
+            index = ~index;
+         }
+
+         for (int i = index + 1; i < tagIndices.Count; i++)
+         {
+            GameplayTagDefinition otherTagDefinition
+               = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
+
+            if (!otherTagDefinition.IsChildOf(tag))
+            {
+               break;
+            }
+
+            childTags.Add(otherTagDefinition.Tag);
          }
       }
    }

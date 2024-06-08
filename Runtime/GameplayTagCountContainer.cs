@@ -75,6 +75,30 @@ namespace BandoWare.GameplayTags
          return new GameplayTagEnumerator(m_Indices.Implicit);
       }
 
+      /// <inheritdoc />
+      public void GetParentTags(GameplayTag tag, List<GameplayTag> parentTags)
+      {
+         GameplayTagContainerUtility.GetParentTags(m_Indices.Implicit, tag, parentTags);
+      }
+
+      /// <inheritdoc />
+      public void GetChildTags(GameplayTag tag, List<GameplayTag> childTags)
+      {
+         GameplayTagContainerUtility.GetChildTags(m_Indices.Implicit, tag, childTags);
+      }
+
+      /// <inheritdoc />
+      public void GetExplicitParentTags(GameplayTag tag, List<GameplayTag> parentTags)
+      {
+         GameplayTagContainerUtility.GetParentTags(m_Indices.Explicit, tag, parentTags);
+      }
+
+      /// <inheritdoc />
+      public void GetExplicitChildTags(GameplayTag tag, List<GameplayTag> childTags)
+      {
+         GameplayTagContainerUtility.GetChildTags(m_Indices.Explicit, tag, childTags);
+      }
+
       /// <summary>
       /// Gets the count of a specific tag.
       /// </summary>
