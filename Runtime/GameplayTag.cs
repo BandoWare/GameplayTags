@@ -8,6 +8,9 @@ namespace BandoWare.GameplayTags
    [DebuggerDisplay("{m_Name,nq}")]
    public struct GameplayTag : IEquatable<GameplayTag>, ISerializationCallbackReceiver
    {
+      /// <summary>
+      /// Represents an invalid tag.
+      /// </summary>
       public static readonly GameplayTag None = new() { m_RuntimeIndex = 0 };
 
       internal readonly int RuntimeIndex => m_RuntimeIndex;
@@ -21,23 +24,32 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <inheritdoc cref="GameplayTagDefinition.ParentTags" />
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public readonly ReadOnlySpan<GameplayTag> ParentTags => Definition.ParentTags;
 
+      /// <inheritdoc cref="GameplayTagDefinition.ChildTags" />
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public readonly ReadOnlySpan<GameplayTag> ChildTags => Definition.ChildTags;
 
+      /// <inheritdoc cref="GameplayTagDefinition.HierarchyTags" />
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public readonly ReadOnlySpan<GameplayTag> HierarchyTags => Definition.HierarchyTags;
 
+      /// <inheritdoc cref="GameplayTagDefinition.Label" />
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public readonly string Label => Definition.Label;
 
+      /// <inheritdoc cref="GameplayTagDefinition.HierarchyLevel" />
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public readonly int HierarchyLevel => Definition.HierarchyLevel;
 
+      /// <inheritdoc cref="GameplayTagDefinition.Description" />
       public readonly string Description => Definition.Description;
 
+      /// <summary>
+      /// The parent tag of this tag. If this tag is "A.B.C", the parent tag will be "A.B".
+      /// </summary>
       public readonly GameplayTag ParentTag
       {
          get
@@ -53,6 +65,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
+      /// <inheritdoc cref="GameplayTagDefinition.Flags" />
       public readonly GameplayTagFlags Flags => Definition.Flags;
 
       public readonly string Name

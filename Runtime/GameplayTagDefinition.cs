@@ -34,24 +34,38 @@ namespace BandoWare.GameplayTags
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public ReadOnlySpan<GameplayTag> HierarchyTags => new(m_HierarchyTags);
 
+      /// <summary>
+      /// The name of the tag. This is the full tag name, including the parent tags.
+      /// </summary>
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public string TagName { get; }
 
+      /// <summary>
+      /// The description of the tag. This is to provide more information about the tag during development.
+      /// </summary>
       public string Description { get; }
+
+      /// <summary>
+      /// The flags of the tag.
+      /// </summary>
       public GameplayTagFlags Flags { get; }
 
+      /// <summary>
+      /// The label of the tag. This is the tag name without the parent tags.
+      /// </summary>
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       public string Label { get; }
+
+      /// <summary>
+      /// The hierarchy level of the tag. This is the number of parent tags.
+      /// </summary>
       public int HierarchyLevel { get; }
       public int RuntimeIndex { get; internal set; }
       public GameplayTagDefinition ParentTagDefinition { get; private set; }
 
       private GameplayTag[] m_ChildTags;
-
       private GameplayTag[] m_HierarchyTags;
-
       private GameplayTag[] m_ParentTags;
-
       private GameplayTagDefinition[] m_Children;
 
       /// <summary>
