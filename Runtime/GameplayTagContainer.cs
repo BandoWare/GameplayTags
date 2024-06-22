@@ -492,7 +492,7 @@ namespace BandoWare.GameplayTags
 
             foreach (GameplayTag tag in definition.HierarchyTags)
             {
-               if (m_Indices.Implicit.Count > 0 && m_Indices.Implicit[^-1] >= tag.RuntimeIndex)
+               if (m_Indices.Implicit.Count > 0 && m_Indices.Implicit[^1] >= tag.RuntimeIndex)
                {
                   continue;
                }

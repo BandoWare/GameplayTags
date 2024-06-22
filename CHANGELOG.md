@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed `GameplayTagContainerUtility.HasAll{Exact}` logic.
-
+- Fixed a bug in `GameplayTagContainer.FillImplicitTags`: Corrected the index check to use the last element in the list properly.
 
 ## [0.0.1-beta.2] - 2023-06-06
 
