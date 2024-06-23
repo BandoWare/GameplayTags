@@ -31,6 +31,7 @@ namespace BandoWare.GameplayTags
          RegisterNoneTag();
          SetTagRuntimeIndices();
          FillParentsAndChildren();
+         SetHierarchyTags();
 
          return m_Definition.ToArray();
       }
@@ -96,6 +97,24 @@ namespace BandoWare.GameplayTags
             {
                child.SetParent(definition);
             }
+         }
+      }
+
+      private void SetHierarchyTags()
+      {
+         for (int i = 1; i < m_Definition.Count; i++)
+         {
+            GameplayTagDefinition definition = m_Definition[i];
+
+            List<GameplayTag> hierarcyTags = new();
+
+            if (definition.ParentTagDefinition != null)
+            {
+               hierarcyTags.AddRange(definition.ParentTagDefinition.HierarchyTags.ToArray());
+            }
+
+            hierarcyTags.Add(definition.Tag);
+            definition.SetHierarchyTags(hierarcyTags.ToArray());
          }
       }
 

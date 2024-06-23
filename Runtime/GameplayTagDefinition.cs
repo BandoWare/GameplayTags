@@ -154,7 +154,6 @@ namespace BandoWare.GameplayTags
          return false;
       }
 
-
       public void SetParent(GameplayTagDefinition parent)
       {
          ParentTagDefinition = parent;
@@ -169,15 +168,17 @@ namespace BandoWare.GameplayTags
 
          tags.Reverse();
          m_ParentTags = tags.ToArray();
-
-         tags.Add(Tag);
-         m_HierarchyTags = tags.ToArray();
       }
 
       public void SetChildren(List<GameplayTagDefinition> children)
       {
          m_Children = children.ToArray();
          m_ChildTags = children.Select(c => c.Tag).ToArray();
+      }
+
+      public void SetHierarchyTags(GameplayTag[] hierarchyTags)
+      {
+         m_HierarchyTags = hierarchyTags;
       }
 
       public void SetRuntimeIndex(int index)

@@ -65,5 +65,48 @@ namespace BandoWare.GameplayAbilities.Tests
          Assert.IsTrue(!a.IsChildOf(b));
          Assert.IsTrue(!test.IsChildOf(b));
       }
+
+      [Test]
+      public void ParentTagTests()
+      {
+         GameplayTag test = "Test";
+         GameplayTag parent = "Test.Parent";
+         GameplayTag firstChild = "Test.Parent.FirstChild";
+         GameplayTag secondChild = "Test.Parent.SecondChild";
+         GameplayTag grandson = "Test.Parent.SecondChild.Grandson";
+
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test, parent }, firstChild.ParentTags.ToArray());
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test, parent }, secondChild.ParentTags.ToArray());
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test, parent, secondChild }, grandson.ParentTags.ToArray());
+      }
+
+      [Test]
+      public void ChildTagsTests()
+      {
+         GameplayTag parent = "Test.Parent";
+         GameplayTag firstChild = "Test.Parent.FirstChild";
+         GameplayTag secondChild = "Test.Parent.SecondChild";
+         GameplayTag grandson = "Test.Parent.SecondChild.Grandson";
+
+         CollectionAssert.AreEquivalent(new GameplayTag[] { firstChild, secondChild, grandson }, parent.ChildTags.ToArray());
+         CollectionAssert.AreEquivalent(new GameplayTag[] { grandson }, secondChild.ChildTags.ToArray());
+         CollectionAssert.IsEmpty(grandson.ChildTags.ToArray());
+      }
+
+      [Test]
+      public void HierarchyTagsTests()
+      {
+         GameplayTag test = "Test";
+         GameplayTag parent = "Test.Parent";
+         GameplayTag firstChild = "Test.Parent.FirstChild";
+         GameplayTag secondChild = "Test.Parent.SecondChild";
+         GameplayTag grandson = "Test.Parent.SecondChild.Grandson";
+
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test, parent, secondChild, grandson }, grandson.HierarchyTags.ToArray());
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test, parent, secondChild }, secondChild.HierarchyTags.ToArray());
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test, parent, firstChild }, firstChild.HierarchyTags.ToArray());
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test, parent }, parent.HierarchyTags.ToArray());
+         CollectionAssert.AreEquivalent(new GameplayTag[] { test }, test.HierarchyTags.ToArray());
+      }
    }
 }
