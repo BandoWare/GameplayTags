@@ -126,11 +126,13 @@ namespace BandoWare.GameplayAbilities.Tests
          T c1 = CreateContainer("Test.A", "Test.A.B.C0");
          T c2 = CreateContainer("Test.A.B", "Test.A.B.C0", "Test.A.B.C1");
          T c3 = CreateContainer("Test", "Test.A");
+         T c4 = CreateContainer("Test");
 
          Assert.IsFalse(c0.HasAll(container));
          Assert.IsTrue(container.HasAll(c1));
          Assert.IsFalse(container.HasAll(c2));
          Assert.IsTrue(container.HasAll(c3));
+         Assert.IsTrue(container.HasAll(c4));
       }
 
       [Test]

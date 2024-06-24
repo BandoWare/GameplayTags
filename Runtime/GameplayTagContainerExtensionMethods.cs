@@ -95,6 +95,11 @@ namespace BandoWare.GameplayTags
             return false;
          }
 
+         if (otherTagIndexes.Count == 1)
+         {
+            return true;
+         }
+
          int end = BinarySearchUtility.Search(tagIndexes, otherTagIndexes[^1], 0, tagIndexes.Count - 1);
          if (end < 0)
          {
