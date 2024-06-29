@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace BandoWare.GameplayTags
@@ -572,58 +570,6 @@ namespace BandoWare.GameplayTags
       IEnumerator IEnumerable.GetEnumerator()
       {
          return GetEnumerator();
-      }
-   }
-
-   internal class GameplayTagContainerDebugView
-   {
-      [DebuggerDisplay("{DebuggerDisplay,nq}")]
-      public struct Tag
-      {
-         public string Name { get; set; }
-         public bool IsExplicit { get; set; }
-
-         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-         private readonly string DebuggerDisplay
-         {
-            get
-            {
-               if (!IsExplicit)
-               {
-                  return Name;
-               }
-
-               return $"{Name} (Explicit)";
-            }
-         }
-      }
-
-      [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-      public IGameplayTagContainer Container { get; set; }
-
-      [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-      public Tag[] Tags
-      {
-         get
-         {
-            return Container.GetTags()
-               .Select(Convert)
-               .ToArray();
-
-            Tag Convert(GameplayTag tag)
-            {
-               return new Tag
-               {
-                  IsExplicit = Container.HasTagExact(tag),
-                  Name = tag.Name
-               };
-            }
-         }
-      }
-
-      public GameplayTagContainerDebugView(IGameplayTagContainer container)
-      {
-         Container = container;
       }
    }
 }

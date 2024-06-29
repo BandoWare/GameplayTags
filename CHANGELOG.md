@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added interfece `IGameplayTagCountContainer`.
+
 ### Fixed
 
+- Fixed debugger display in `GameplayTagCountContainer`.
 - Fixed bug in `GameplayTagContainer.HasAll` that was returning false when the comparator container had only one tag.
 - Fixed bug where root game tags had an empty `HierarchyTags`.
 
@@ -17,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add `GetParentTags` and `GetChildTags` to `IGameplayTagContainer`.
+- Added `GetParentTags` and `GetChildTags` to `IGameplayTagContainer`.
 
 ### Fixed
 

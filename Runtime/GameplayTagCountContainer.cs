@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine.Pool;
 
 namespace BandoWare.GameplayTags
@@ -39,9 +40,53 @@ namespace BandoWare.GameplayTags
       public OnTagCountChangedDelegate OnNewOrRemove;
    }
 
-   [DebuggerTypeProxy(typeof(GameplayTagContainerDebugView))]
+   public interface IGameplayTagCountContainer : IGameplayTagContainer
+   {
+      /// <summary>
+      /// Event that is called when the count of any tag changes.
+      /// </summary>
+      event OnTagCountChangedDelegate OnAnyTagCountChange;
+
+      /// <summary>
+      /// Eve that is called when any tag is added or removed.
+      /// </summary>
+      event OnTagCountChangedDelegate OnAnyTagNewOrRemove;
+
+      /// <summary>
+      /// Gets the count of a specific tag (the number of times it has been explicitly added).
+      /// </summary>
+      int GetExplicitTagCount(GameplayTag tag);
+
+      /// <summary>
+      /// Gets the count of a specific tag.
+      /// </summary>
+      int GetTagCount(GameplayTag tag);
+
+      /// <summary>
+      /// Registers a callback for a tag event.
+      /// </summary>
+      /// <param name="callback">The callback to register.</param>
+      /// <param name="tag">The gameplay tag.</param>
+      /// <param name="eventType">The type of event.</param>
+      void RegisterTagEventCallback(GameplayTag tag, GameplayTagEventType eventType, OnTagCountChangedDelegate callback);
+
+      /// <summary>
+      /// Removes a callback for a tag event.
+      /// </summary>
+      /// <param name="callback">The callback to remove.</param>
+      /// <param name="tag">The gameplay tag.</param>
+      /// <param name="eventType">The type of event.</param>
+      void RemoveTagEventCallback(GameplayTag tag, GameplayTagEventType eventType, OnTagCountChangedDelegate callback);
+
+      /// <summary>
+      /// Removes all callbacks for tag events.
+      /// </summary>
+      void RemoveAllTagEventCallbacks();
+   }
+
    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-   public class GameplayTagCountContainer : IGameplayTagContainer
+   [DebuggerTypeProxy(typeof(GameplayTagContainerDebugView))]
+   public class GameplayTagCountContainer : IGameplayTagCountContainer
    {
       /// <inheritdoc />
       public bool IsEmpty => m_Indices.Explicit.Count == 0;
@@ -54,6 +99,10 @@ namespace BandoWare.GameplayTags
 
       /// <inheritdoc />
       public GameplayTagContainerIndexes Indexes => m_Indices;
+
+      [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+      [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used for debugging")]
+      private string DebuggerDisplay => $"Count (Explicit, Total) = ({ExplicitTagCount}, {TagCount})";
 
       public event OnTagCountChangedDelegate OnAnyTagNewOrRemove;
       public event OnTagCountChangedDelegate OnAnyTagCountChange;
@@ -99,34 +148,21 @@ namespace BandoWare.GameplayTags
          GameplayTagContainerUtility.GetChildTags(m_Indices.Explicit, tag, childTags);
       }
 
-      /// <summary>
-      /// Gets the count of a specific tag.
-      /// </summary>
-      /// <param name="tag">The gameplay tag.</param>
-      /// <returns>The count of the specified tag.</returns>
+      /// <inheritdoc />
       public int GetTagCount(GameplayTag tag)
       {
          m_TagCountMap.TryGetValue(tag, out int count);
          return count;
       }
 
-      /// <summary>
-      /// Gets the explicit count of a specific tag.
-      /// </summary>
-      /// <param name="tag">The gameplay tag.</param>
-      /// <returns>The explicit count of the specified tag.</returns>
+      /// <inheritdoc />
       public int GetExplicitTagCount(GameplayTag tag)
       {
          m_ExplicitTagCountMap.TryGetValue(tag, out int count);
          return count;
       }
 
-      /// <summary>
-      /// Registers a callback for a tag event.
-      /// </summary>
-      /// <param name="tag">The gameplay tag.</param>
-      /// <param name="eventType">The type of event.</param>
-      /// <param name="callback">The callback to register.</param>
+      /// <inheritdoc />
       public void RegisterTagEventCallback(GameplayTag tag, GameplayTagEventType eventType, OnTagCountChangedDelegate callback)
       {
          m_TagDelegateInfoMap.TryGetValue(tag, out GameplayTagDelegateInfo delegateInfo);
@@ -134,12 +170,7 @@ namespace BandoWare.GameplayTags
          m_TagDelegateInfoMap[tag] = delegateInfo;
       }
 
-      /// <summary>
-      /// Removes a callback for a tag event.
-      /// </summary>
-      /// <param name="tag">The gameplay tag.</param>
-      /// <param name="eventType">The type of event.</param>
-      /// <param name="callback">The callback to remove.</param>
+      /// <inheritdoc />
       public void RemoveTagEventCallback(GameplayTag tag, GameplayTagEventType eventType, OnTagCountChangedDelegate callback)
       {
          if (m_TagDelegateInfoMap.TryGetValue(tag, out GameplayTagDelegateInfo delegateInfo))
@@ -149,12 +180,7 @@ namespace BandoWare.GameplayTags
          }
       }
 
-      /// <summary>
-      /// Removes a callback for a tag event.
-      /// </summary>
-      /// <param name="tag">The gameplay tag.</param>
-      /// <param name="eventType">The type of event.</param>
-      /// <param name="callback">The callback to remove.</param>
+      /// <inheritdoc />
       public void RemoveAllTagEventCallbacks()
       {
          m_TagDelegateInfoMap.Clear();
