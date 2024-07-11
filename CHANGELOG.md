@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added a message in the GameplayTagContainer property drawer when in multi-edit mode and the container values are different.
 - Added warning log when a tag cannot be found in `GameplayTagManager.RequestTag`.
 - Added interfece `IGameplayTagCountContainer`.
 
