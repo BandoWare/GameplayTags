@@ -6,6 +6,15 @@ using UnityEngine.TestTools;
 
 namespace BandoWare.GameplayAbilities.Tests
 {
+   // TODO: Add tests for hierarchical behaviours
+   public class GameplayTagHierarchicalContainerTests : GameplayTagContainerTestsBase<GameplayTagHierarchicalContainer>
+   {
+      public override GameplayTagHierarchicalContainer CreateContainer()
+      {
+         return new GameplayTagHierarchicalContainer();
+      }
+   }
+
    public class GameplayTagContainerTests : GameplayTagContainerTestsBase<GameplayTagContainer>
    {
       public override GameplayTagContainer CreateContainer()
