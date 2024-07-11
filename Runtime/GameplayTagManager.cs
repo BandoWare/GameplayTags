@@ -29,6 +29,7 @@ namespace BandoWare.GameplayTags
       {
          if (!TryGetDefinition(name, out GameplayTagDefinition definition))
          {
+            Debug.LogWarning($"No tag registered with name \"{name}\".");
             return GameplayTag.None;
          }
 
