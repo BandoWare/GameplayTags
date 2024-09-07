@@ -21,6 +21,17 @@ namespace BandoWare.GameplayAbilities.Tests
       {
          return new GameplayTagContainer();
       }
+
+      [Test]
+      public void Clone()
+      {
+         GameplayTagContainer container1 = new() { "Test.A", "Test.A.B.C0", "Test.D" };
+
+         GameplayTagContainer container2 = container1.Clone();
+
+
+         CollectionAssert.AreEqual(container1, container2);
+      }
    }
 
    public class GameplayTagCountContainerTests : GameplayTagContainerTestsBase<GameplayTagCountContainer>

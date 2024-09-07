@@ -207,7 +207,10 @@ namespace BandoWare.GameplayTags
             return clone;
          }
 
+         GameplayTagContainerIndexes.Create(ref clone.m_Indices);
+
          clone.m_Indices.CopyTo(m_Indices);
+         m_Indices.CopyTo(clone.m_Indices);
 
          return clone;
       }
