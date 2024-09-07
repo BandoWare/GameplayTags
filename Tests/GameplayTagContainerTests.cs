@@ -29,7 +29,6 @@ namespace BandoWare.GameplayAbilities.Tests
 
          GameplayTagContainer container2 = container1.Clone();
 
-
          CollectionAssert.AreEqual(container1, container2);
       }
    }
@@ -156,6 +155,24 @@ namespace BandoWare.GameplayAbilities.Tests
       }
 
       [Test]
+      public void HasAny()
+      {
+         T container = CreateContainer("Test.A", "Test.A.B.C0");
+
+         T c0 = CreateContainer("Test.A", "Test.A.B", "Test.A.B.C1");
+         T c1 = CreateContainer("Test.A", "Test.A.B.C0");
+         T c2 = CreateContainer("Test.A.B", "Test.A.B.C0", "Test.A.B.C1");
+         T c3 = CreateContainer("Test", "Test.A");
+         T c4 = CreateContainer("Test");
+
+         Assert.IsTrue(c0.HasAny(container));
+         Assert.IsTrue(container.HasAny(c1));
+         Assert.IsTrue(container.HasAny(c2));
+         Assert.IsTrue(container.HasAny(c3));
+         Assert.IsTrue(container.HasAny(c4));
+      }
+
+      [Test]
       public void HasAllExact()
       {
          T container = CreateContainer("Test.A", "Test.A.B.C0");
@@ -169,6 +186,22 @@ namespace BandoWare.GameplayAbilities.Tests
          Assert.IsTrue(container.HasAllExact(c1));
          Assert.IsFalse(container.HasAllExact(c2));
          Assert.IsFalse(container.HasAllExact(c3));
+      }
+
+      [Test]
+      public void HasAnyExact()
+      {
+         T container = CreateContainer("Test.A", "Test.A.B.C0");
+
+         T c0 = CreateContainer("Test.A", "Test.A.B", "Test.A.B.C1");
+         T c1 = CreateContainer("Test.A", "Test.A.B.C0");
+         T c2 = CreateContainer("Test.A.B", "Test.A.B.C0");
+         T c3 = CreateContainer("Test");
+
+         Assert.IsTrue(c0.HasAnyExact(container));
+         Assert.IsTrue(container.HasAnyExact(c1));
+         Assert.IsTrue(container.HasAnyExact(c2));
+         Assert.IsFalse(container.HasAnyExact(c3));
       }
 
       [Test]

@@ -74,7 +74,7 @@ namespace BandoWare.GameplayTags
             }
          }
 
-         return true;
+         return false;
       }
 
       private static bool HasAllInternal(List<int> tagIndexes, List<int> otherTagIndexes)

@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed bug in `GameplayTagContainer.HasAll` that was returning false when the comparator container had only one tag.
 - Fixed bug where root game tags had an empty `HierarchyTags`.
 - Fixed `GameplayTagContainer.Clone()` implementation. (#1)
+- Fixed `HasAny(Exact)` returning true when it should return false. (#2)
 
 ### Changed
 
