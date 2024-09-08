@@ -1,5 +1,6 @@
 using BandoWare.GameplayTags;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -273,6 +274,43 @@ namespace BandoWare.GameplayAbilities.Tests
          T container = CreateContainer("Test.A", "Test.A.B.C0");
          GameplayTag[] expectedTags = new GameplayTag[] { "Test.A", "Test.A.B.C0" };
          CollectionAssert.AreEqual(expectedTags, container.GetExplicitTags());
+      }
+
+      [Test]
+      public void GetExplicitChildTags()
+      {
+         T container = CreateContainer("Test.A", "Test.A.B.C0");
+
+         List<GameplayTag> childTags = new();
+         container.GetExplicitChildTags("Test", childTags);
+
+         CollectionAssert.AreEqual(new GameplayTag[] { "Test.A", "Test.A.B.C0" }, childTags);
+      }
+
+      /// <summary>
+      /// Tests the case where the container has a single child tag.
+      /// </summary>
+      /// <seealso href="https://github.com/BandoWare/GameplayTags/issues/3" />
+      [Test]
+      public void GetExplicitChildTags_SingleChild()
+      {
+         T container = CreateContainer("Test.A.B", "Test.D", "Test");
+
+         List<GameplayTag> childTags = new();
+         container.GetExplicitChildTags("Test.A", childTags);
+
+         CollectionAssert.AreEqual(new GameplayTag[] { "Test.A.B" }, childTags);
+      }
+
+      [Test]
+      public void GetChildTags()
+      {
+         T container = CreateContainer("Test.A", "Test.A.B.C0");
+
+         List<GameplayTag> childTags = new();
+         container.GetChildTags("Test", childTags);
+
+         CollectionAssert.AreEqual(new GameplayTag[] { "Test.A", "Test.A.B", "Test.A.B.C0" }, childTags);
       }
    }
 }

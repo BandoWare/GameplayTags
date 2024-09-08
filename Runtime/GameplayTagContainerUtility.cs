@@ -5,7 +5,8 @@ namespace BandoWare.GameplayTags
 {
    public static class GameplayTagContainerUtility
    {
-      public static bool HasAll<T, U, V>(this T containerA, in U containerB, in V other) where T : IGameplayTagContainer where U : IGameplayTagContainer where V : IGameplayTagContainer
+      public static bool HasAll<T, U, V>(this T containerA, in U containerB, in V other)
+         where T : IGameplayTagContainer where U : IGameplayTagContainer where V : IGameplayTagContainer
       {
          if (containerA.IsEmpty && containerB.IsEmpty)
          {
@@ -32,7 +33,8 @@ namespace BandoWare.GameplayTags
          }
       }
 
-      public static bool HasAllExact<T, U, V>(this T containerA, in U containerB, in V other) where T : IGameplayTagContainer where U : IGameplayTagContainer where V : IGameplayTagContainer
+      public static bool HasAllExact<T, U, V>(this T containerA, in U containerB, in V other)
+         where T : IGameplayTagContainer where U : IGameplayTagContainer where V : IGameplayTagContainer
       {
          if (containerA.IsEmpty && containerB.IsEmpty)
          {
@@ -69,8 +71,7 @@ namespace BandoWare.GameplayTags
 
          for (int i = index - 1; i >= 0; i--)
          {
-            GameplayTagDefinition otherTagDefinition
-               = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
+            GameplayTagDefinition otherTagDefinition = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
 
             if (!otherTagDefinition.IsParentOf(tag))
             {
@@ -84,15 +85,11 @@ namespace BandoWare.GameplayTags
       internal static void GetChildTags(List<int> tagIndices, GameplayTag tag, List<GameplayTag> childTags)
       {
          int index = tagIndices.BinarySearch(tag.RuntimeIndex);
-         if (index < 0)
-         {
-            index = ~index;
-         }
+         index = index < 0 ? ~index : index + 1;
 
-         for (int i = index + 1; i < tagIndices.Count; i++)
+         for (int i = index; i < tagIndices.Count; i++)
          {
-            GameplayTagDefinition otherTagDefinition
-               = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
+            GameplayTagDefinition otherTagDefinition = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
 
             if (!otherTagDefinition.IsChildOf(tag))
             {

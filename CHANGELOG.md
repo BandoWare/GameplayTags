@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed bug where root game tags had an empty `HierarchyTags`.
 - Fixed `GameplayTagContainer.Clone()` implementation. (#1)
 - Fixed `HasAny(Exact)` returning true when it should return false. (#2)
+- Fixed `GetExplicit(Child)Tags` implementation. (#3)
 
 ### Changed
 
