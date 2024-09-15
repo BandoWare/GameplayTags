@@ -8,40 +8,34 @@ using UnityEngine;
 
 namespace BandoWare.GameplayTags
 {
-   public struct GameplayTagContainerIndexes
+   public struct GameplayTagContainerIndices
    {
       public readonly bool IsCreated => Explicit != null && Implicit != null;
 
       internal List<int> Explicit { get; private set; }
       internal List<int> Implicit { get; private set; }
 
-      public static void Create(ref GameplayTagContainerIndexes indexes)
+      public static void Create(ref GameplayTagContainerIndices indices)
       {
-         if (indexes.IsCreated)
+         if (indices.IsCreated)
          {
             return;
          }
 
-         indexes = new GameplayTagContainerIndexes()
+         indices = new GameplayTagContainerIndices()
          {
             Explicit = new(),
             Implicit = new()
          };
       }
 
-      public static GameplayTagContainerIndexes Create()
+      public static GameplayTagContainerIndices Create()
       {
-         return new GameplayTagContainerIndexes()
+         return new GameplayTagContainerIndices()
          {
             Explicit = new(),
             Implicit = new()
          };
-      }
-
-      internal readonly void Add(in GameplayTagContainerIndexes other)
-      {
-         Explicit.AddRange(other.Explicit);
-         Implicit.AddRange(other.Implicit);
       }
 
       internal readonly void Clear()
@@ -50,10 +44,11 @@ namespace BandoWare.GameplayTags
          Implicit.Clear();
       }
 
-      internal readonly void CopyTo(in GameplayTagContainerIndexes other)
+      internal readonly void CopyTo(in GameplayTagContainerIndices other)
       {
          other.Clear();
-         other.Add(this);
+         other.Explicit.AddRange(other.Explicit);
+         other.Implicit.AddRange(other.Implicit);
       }
    }
 
@@ -81,7 +76,7 @@ namespace BandoWare.GameplayTags
       /// <summary>
       /// Gets the indexes of tags in this container.
       /// </summary>
-      GameplayTagContainerIndexes Indexes { get; }
+      GameplayTagContainerIndices Indices { get; }
 
       /// <summary>
       /// Adds a tag to this container.
@@ -161,16 +156,16 @@ namespace BandoWare.GameplayTags
    public class GameplayTagContainer : IGameplayTagContainer, ISerializationCallbackReceiver, IEnumerable<GameplayTag>
    {
       /// <inheritdoc />
-      public bool IsEmpty => m_Indices.Explicit.Count == 0;
+      public bool IsEmpty => m_Indices.Explicit?.Count == 0;
 
       /// <inheritdoc />
-      public int ExplicitTagCount => m_Indices.Explicit.Count;
+      public int ExplicitTagCount => m_Indices.Explicit?.Count ?? 0;
 
       /// <inheritdoc />
-      public int TagCount => m_Indices.Implicit.Count;
+      public int TagCount => m_Indices.Implicit?.Count ?? 0;
 
       /// <inheritdoc />
-      public GameplayTagContainerIndexes Indexes => m_Indices;
+      public GameplayTagContainerIndices Indices => m_Indices;
 
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
       [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used for debugging")]
@@ -179,7 +174,7 @@ namespace BandoWare.GameplayTags
       [SerializeField]
       private List<string> m_SerializedExplicitTags;
 
-      private GameplayTagContainerIndexes m_Indices = new();
+      private GameplayTagContainerIndices m_Indices = new();
 
       /// <summary>
       /// Default constructor.
@@ -201,16 +196,7 @@ namespace BandoWare.GameplayTags
       public GameplayTagContainer Clone()
       {
          GameplayTagContainer clone = new();
-
-         if (IsEmpty)
-         {
-            return clone;
-         }
-
-         GameplayTagContainerIndexes.Create(ref clone.m_Indices);
-
-         clone.m_Indices.CopyTo(m_Indices);
-         m_Indices.CopyTo(clone.m_Indices);
+         Copy(clone, this);
 
          return clone;
       }
@@ -222,7 +208,13 @@ namespace BandoWare.GameplayTags
       /// <param name="src">The source container.</param>
       public static void Copy<T>(GameplayTagContainer dest, in T src) where T : IGameplayTagContainer
       {
-         dest.m_Indices.CopyTo(src.Indexes);
+         if (src.IsEmpty)
+         {
+            return;
+         }
+
+         GameplayTagContainerIndices.Create(ref dest.m_Indices);
+         dest.m_Indices.CopyTo(src.Indices);
       }
 
       /// <summary>
@@ -280,8 +272,8 @@ namespace BandoWare.GameplayTags
             return;
          }
 
-         OrderedListIntersection(lhs.Indexes.Explicit, rhs.Indexes.Explicit, m_Indices.Explicit);
-         OrderedListIntersection(lhs.Indexes.Implicit, rhs.Indexes.Implicit, m_Indices.Implicit);
+         OrderedListIntersection(lhs.Indices.Explicit, rhs.Indices.Explicit, m_Indices.Explicit);
+         OrderedListIntersection(lhs.Indices.Implicit, rhs.Indices.Implicit, m_Indices.Implicit);
       }
 
       /// <summary>
@@ -349,8 +341,8 @@ namespace BandoWare.GameplayTags
             new GameplayTagContainer(lhs);
          }
 
-         OrderedListUnion(lhs.Indexes.Explicit, rhs.Indexes.Explicit, union.m_Indices.Explicit);
-         OrderedListUnion(lhs.Indexes.Implicit, rhs.Indexes.Implicit, union.m_Indices.Implicit);
+         OrderedListUnion(lhs.Indices.Explicit, rhs.Indices.Explicit, union.m_Indices.Explicit);
+         OrderedListUnion(lhs.Indices.Implicit, rhs.Indices.Implicit, union.m_Indices.Implicit);
 
          return union;
       }
@@ -405,7 +397,7 @@ namespace BandoWare.GameplayTags
       /// <inheritdoc />
       public void AddTag(GameplayTag tag)
       {
-         GameplayTagContainerIndexes.Create(ref m_Indices);
+         GameplayTagContainerIndices.Create(ref m_Indices);
          int index = BinarySearchUtility.Search(m_Indices.Explicit, tag.RuntimeIndex);
          if (index >= 0)
          {
@@ -526,7 +518,7 @@ namespace BandoWare.GameplayTags
 
       void ISerializationCallbackReceiver.OnAfterDeserialize()
       {
-         m_Indices = GameplayTagContainerIndexes.Create();
+         m_Indices = GameplayTagContainerIndices.Create();
          if (m_SerializedExplicitTags == null || m_SerializedExplicitTags.Count == 0)
          {
             return;

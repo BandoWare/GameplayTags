@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed `GameplayTagContainer.Clone()` implementation. (#1)
+  - **Note:** Previous fix in this area was incorrect. This has now been properly addressed.
+
 ## [0.1.0-beta.4]
 
 ### Added

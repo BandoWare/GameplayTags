@@ -9,19 +9,20 @@ namespace BandoWare.GameplayTags
       {
          get
          {
-            GameplayTagDefinition definition = GameplayTagManager.GetDefinitionFromRuntimeIndex(m_Indexes[m_CurrentIndex]);
+            GameplayTagDefinition definition = GameplayTagManager.GetDefinitionFromRuntimeIndex(m_Indices[m_CurrentIndex]);
             return definition.Tag;
          }
       }
 
       readonly object IEnumerator.Current => Current;
 
-      private List<int> m_Indexes;
+      private readonly List<int> m_Indices;
       private int m_CurrentIndex;
+
 
       internal GameplayTagEnumerator(List<int> indices)
       {
-         m_Indexes = indices;
+         m_Indices = indices;
          m_CurrentIndex = -1;
       }
 
@@ -32,7 +33,7 @@ namespace BandoWare.GameplayTags
       public bool MoveNext()
       {
          m_CurrentIndex++;
-         return m_CurrentIndex < m_Indexes.Count;
+         return m_Indices != null && m_CurrentIndex < m_Indices.Count;
       }
 
       public void Reset()
