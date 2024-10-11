@@ -353,6 +353,67 @@ namespace BandoWare.GameplayTags
       }
 
       /// <summary>
+      /// Compares the explicit tags between this instance and another <see cref="IGameplayTagContainer"/> instance.
+      /// It populates the lists of added and removed tags based on the comparison.
+      /// </summary>
+      /// <typeparam name="T">Type that implements <see cref="IGameplayTagContainer"/>.</typeparam>
+      /// <param name="other">The other tag container to compare against.</param>
+      /// <param name="added">The list that will be populated with tags that are in this container but not in the other.</param>
+      /// <param name="removed">The list that will be populated with tags that are in the other container but not in this one.</param>
+      public void GetDiffExplicitTags<T>(T other, List<GameplayTag> added, List<GameplayTag> removed) where T : IGameplayTagContainer
+      {
+         // Get the indices of the explicit tags from the other container.
+         GameplayTagContainerIndices otherIndices = other.Indices;
+
+         // Get the explicit tag indices from both containers.
+         List<int> currentContainerTagIndices = Indices.Explicit;
+         List<int> otherContainerTagIndices = otherIndices.Explicit;
+
+         // Initialize counters for both lists.
+         int currentIndex = 0, otherIndex = 0;
+
+         // Traverse both lists of explicit tag indices.
+         while (currentIndex < Indices.ExplicitTagCount && otherIndex < otherIndices.ExplicitTagCount)
+         {
+            int currentTagIndex = currentContainerTagIndices[currentIndex], otherTagIndex = otherContainerTagIndices[otherIndex];
+
+            // If both indices match, the tag is present in both containers. Move to the next element in both lists.
+            if (currentTagIndex == otherTagIndex)
+            {
+               currentIndex++;
+               otherIndex++;
+               continue;
+            }
+
+            // If the tag index in this container is smaller, it means the tag is present here but not in the other container.
+            // Add it to the added list and increment the index for this container.
+            if (currentTagIndex < otherTagIndex)
+            {
+               added.Add(GameplayTagManager.GetDefinitionFromRuntimeIndex(currentTagIndex).Tag);
+               currentIndex++;
+               continue;
+            }
+
+            // If the tag index in the other container is smaller, it means the tag is present in the other container but not in this one.
+            // Add it to the removed list and increment the index for the other container.
+            removed.Add(GameplayTagManager.GetDefinitionFromRuntimeIndex(otherTagIndex).Tag);
+            otherIndex++;
+         }
+
+         // If there are remaining elements in this container's explicit tags, they are considered added.
+         for (; currentIndex < Indices.ExplicitTagCount; currentIndex++)
+         {
+            added.Add(GameplayTagManager.GetDefinitionFromRuntimeIndex(currentContainerTagIndices[currentIndex]).Tag);
+         }
+
+         // If there are remaining elements in the other container's explicit tags, they are considered removed.
+         for (; otherIndex < otherIndices.ExplicitTagCount; otherIndex++)
+         {
+            removed.Add(GameplayTagManager.GetDefinitionFromRuntimeIndex(otherContainerTagIndices[otherIndex]).Tag);
+         }
+      }
+
+      /// <summary>
       /// Gets an enumerator for the explicit tags in this container.
       /// </summary>
       public GameplayTagEnumerator GetExplicitTags()

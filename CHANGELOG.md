@@ -7,10 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+### Added
+
+- Added `GameplayTagContainer.GetDiffExplicitTags`.
+
 ### Fixed
 
 - Fixed `GameplayTagContainer.Clone()` implementation. (#1)
   - **Note:** Previous fix in this area was incorrect. This has now been properly addressed.
+
+### Changed
+
+- `GameplayTagUtility` is now public.
 
 ## [0.1.0-beta.4]
 
@@ -32,7 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- `GameplayTagUtility` is now public.
 - Unchecked option **Auto Referenced** in the Editor assembly.
 
 ## [0.1.0-beta.3]
