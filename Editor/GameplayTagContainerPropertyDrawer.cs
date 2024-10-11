@@ -1,10 +1,8 @@
-﻿using BandoWare.GameplayTags;
-using BandoWare.GameplayTags.Editor;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace BandoWare.GameplayAbilities.Editor
+namespace BandoWare.GameplayTags.Editor
 {
    [CustomPropertyDrawer(typeof(GameplayTagContainer))]
    public class GameplayTagContainerPropertyDrawer : PropertyDrawer

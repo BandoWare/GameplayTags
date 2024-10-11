@@ -1,11 +1,10 @@
-using BandoWare.GameplayTags;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace BandoWare.GameplayAbilities.Tests
+namespace BandoWare.GameplayTags.Tests
 {
    // TODO: Add tests for hierarchical behaviours
    public class GameplayTagHierarchicalContainerTests : GameplayTagContainerTestsBase<GameplayTagHierarchicalContainer>

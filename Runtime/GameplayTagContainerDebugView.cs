@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using UnityEditor;
 
 namespace BandoWare.GameplayTags
 {

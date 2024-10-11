@@ -1,8 +1,7 @@
-﻿using BandoWare.GameplayTags;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 
-namespace BandoWare.GameplayAbilities.Tests
+namespace BandoWare.GameplayTags.Tests
 {
    public class GameplayTagTests
    {
