@@ -25,14 +25,14 @@ namespace BandoWare.GameplayTags
          return HasAnyInternal(container.Indices.Explicit, other?.Indices.Explicit);
       }
 
-      private static bool HasAnyInternal(List<int> tagIndexes, List<int> otherTagIndexes)
+      private static bool HasAnyInternal(List<int> tagIndices, List<int> otherTagIndices)
       {
-         if (otherTagIndexes == null || otherTagIndexes.Count == 0 || tagIndexes == null || tagIndexes.Count == 0)
+         if (otherTagIndices == null || otherTagIndices.Count == 0 || tagIndices == null || tagIndices.Count == 0)
          {
             return false;
          }
 
-         int start = BinarySearchUtility.Search(tagIndexes, otherTagIndexes[0], 0, tagIndexes.Count - 1);
+         int start = BinarySearchUtility.Search(tagIndices, otherTagIndices[0], 0, tagIndices.Count - 1);
          if (start >= 0)
          {
             return true;
@@ -40,7 +40,7 @@ namespace BandoWare.GameplayTags
 
          start = ~start;
 
-         int end = BinarySearchUtility.Search(tagIndexes, otherTagIndexes[^1], start, tagIndexes.Count - 1);
+         int end = BinarySearchUtility.Search(tagIndices, otherTagIndices[^1], start, tagIndices.Count - 1);
          if (end >= 0)
          {
             return true;
@@ -50,21 +50,21 @@ namespace BandoWare.GameplayTags
 
          int j = 1;
          int i = start + 1;
-         while (i < end && j < otherTagIndexes.Count)
+         while (i < end && j < otherTagIndices.Count)
          {
-            if (otherTagIndexes[j] == tagIndexes[i])
+            if (otherTagIndices[j] == tagIndices[i])
             {
                return true;
             }
 
-            if (tagIndexes[i] > otherTagIndexes[j])
+            if (tagIndices[i] > otherTagIndices[j])
             {
                i++;
                continue;
             }
 
             j++;
-            while (otherTagIndexes[j] < tagIndexes[i])
+            while (otherTagIndices[j] < tagIndices[i])
             {
                j++;
                if (j == end)
@@ -77,30 +77,30 @@ namespace BandoWare.GameplayTags
          return false;
       }
 
-      private static bool HasAllInternal(List<int> tagIndexes, List<int> otherTagIndexes)
+      private static bool HasAllInternal(List<int> tagIndices, List<int> otherTagIndices)
       {
-         if (otherTagIndexes == null || otherTagIndexes.Count == 0)
+         if (otherTagIndices == null || otherTagIndices.Count == 0)
          {
             return true;
          }
 
-         if (tagIndexes == null || tagIndexes.Count == 0)
+         if (tagIndices == null || tagIndices.Count == 0)
          {
             return false;
          }
 
-         int start = BinarySearchUtility.Search(tagIndexes, otherTagIndexes[0], 0, tagIndexes.Count - 1);
+         int start = BinarySearchUtility.Search(tagIndices, otherTagIndices[0], 0, tagIndices.Count - 1);
          if (start < 0)
          {
             return false;
          }
 
-         if (otherTagIndexes.Count == 1)
+         if (otherTagIndices.Count == 1)
          {
             return true;
          }
 
-         int end = BinarySearchUtility.Search(tagIndexes, otherTagIndexes[^1], 0, tagIndexes.Count - 1);
+         int end = BinarySearchUtility.Search(tagIndices, otherTagIndices[^1], 0, tagIndices.Count - 1);
          if (end < 0)
          {
             return false;
@@ -110,19 +110,19 @@ namespace BandoWare.GameplayTags
          end--;
          for (int i = start + 1; i < end; i++)
          {
-            if (otherTagIndexes[j] == tagIndexes[i])
+            if (otherTagIndices[j] == tagIndices[i])
             {
                j++;
                continue;
             }
 
-            if (otherTagIndexes[j] > tagIndexes[i])
+            if (otherTagIndices[j] > tagIndices[i])
             {
                return false;
             }
          }
 
-         return j == otherTagIndexes.Count - 1;
+         return j == otherTagIndices.Count - 1;
       }
 
       public static bool HasAll<T, U>(this T container, in U other) where T : IGameplayTagContainer where U : IGameplayTagContainer

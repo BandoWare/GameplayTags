@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine.Pool;
 
 namespace BandoWare.GameplayTags
@@ -89,19 +88,18 @@ namespace BandoWare.GameplayTags
    public class GameplayTagCountContainer : IGameplayTagCountContainer
    {
       /// <inheritdoc />
-      public bool IsEmpty => m_Indices.Explicit?.Count == 0;
+      public bool IsEmpty => m_Indices.IsEmpty;
 
       /// <inheritdoc />
-      public int ExplicitTagCount => m_Indices.Explicit?.Count ?? 0;
+      public int ExplicitTagCount => m_Indices.ExplicitTagCount;
 
       /// <inheritdoc />
-      public int TagCount => m_Indices.Implicit?.Count ?? 0;
+      public int TagCount => m_Indices.TagCount;
 
       /// <inheritdoc />
       public GameplayTagContainerIndices Indices => m_Indices;
 
       [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-      [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used for debugging")]
       private string DebuggerDisplay => $"Count (Explicit, Total) = ({ExplicitTagCount}, {TagCount})";
 
       public event OnTagCountChangedDelegate OnAnyTagNewOrRemove;

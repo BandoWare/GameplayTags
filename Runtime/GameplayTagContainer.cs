@@ -11,6 +11,9 @@ namespace BandoWare.GameplayTags
    public struct GameplayTagContainerIndices
    {
       public readonly bool IsCreated => Explicit != null && Implicit != null;
+      public readonly bool IsEmpty => !IsCreated || Explicit.Count == 0;
+      public readonly int TagCount => IsCreated ? Implicit.Count : 0;
+      public readonly int ExplicitTagCount => IsCreated ? Explicit.Count : 0;
 
       internal List<int> Explicit { get; private set; }
       internal List<int> Implicit { get; private set; }
@@ -74,7 +77,7 @@ namespace BandoWare.GameplayTags
       public int TagCount { get; }
 
       /// <summary>
-      /// Gets the indexes of tags in this container.
+      /// Gets the indeces of tags in this container.
       /// </summary>
       GameplayTagContainerIndices Indices { get; }
 
@@ -155,14 +158,16 @@ namespace BandoWare.GameplayTags
    [DebuggerDisplay("{DebuggerDisplay,nq}")]
    public class GameplayTagContainer : IGameplayTagContainer, ISerializationCallbackReceiver, IEnumerable<GameplayTag>
    {
-      /// <inheritdoc />
-      public bool IsEmpty => m_Indices.Explicit?.Count == 0;
+      public static GameplayTagContainer Empty { get; } = new();
 
       /// <inheritdoc />
-      public int ExplicitTagCount => m_Indices.Explicit?.Count ?? 0;
+      public bool IsEmpty => m_Indices.IsEmpty;
 
       /// <inheritdoc />
-      public int TagCount => m_Indices.Implicit?.Count ?? 0;
+      public int ExplicitTagCount => m_Indices.ExplicitTagCount;
+
+      /// <inheritdoc />
+      public int TagCount => m_Indices.TagCount;
 
       /// <inheritdoc />
       public GameplayTagContainerIndices Indices => m_Indices;
