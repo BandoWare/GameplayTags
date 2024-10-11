@@ -110,9 +110,7 @@ namespace BandoWare.GameplayTags.Tests
       {
          T container = CreateContainer();
          foreach (GameplayTag tag in tags)
-         {
             container.AddTag(tag);
-         }
 
          return container;
       }

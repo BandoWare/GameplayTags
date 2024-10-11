@@ -21,9 +21,7 @@ namespace BandoWare.GameplayTags
       public static void Create(ref GameplayTagContainerIndices indices)
       {
          if (indices.IsCreated)
-         {
             return;
-         }
 
          indices = new GameplayTagContainerIndices()
          {
@@ -214,9 +212,7 @@ namespace BandoWare.GameplayTags
       public static void Copy<T>(GameplayTagContainer dest, in T src) where T : IGameplayTagContainer
       {
          if (src.IsEmpty)
-         {
             return;
-         }
 
          GameplayTagContainerIndices.Create(ref dest.m_Indices);
          dest.m_Indices.CopyTo(src.Indices);
@@ -273,9 +269,7 @@ namespace BandoWare.GameplayTags
          }
 
          if (lhs.IsEmpty || rhs.IsEmpty)
-         {
             return;
-         }
 
          OrderedListIntersection(lhs.Indices.Explicit, rhs.Indices.Explicit, m_Indices.Explicit);
          OrderedListIntersection(lhs.Indices.Implicit, rhs.Indices.Implicit, m_Indices.Implicit);
@@ -319,32 +313,22 @@ namespace BandoWare.GameplayTags
             }
 
             for (; i < a.Count; i++)
-            {
                dst.Add(a[i]);
-            }
 
             for (; j < b.Count; j++)
-            {
                dst.Add(b[j]);
-            }
          }
 
          GameplayTagContainer union = new();
 
          if (lhs.IsEmpty || rhs.IsEmpty)
-         {
             return union;
-         }
 
          if (lhs.IsEmpty)
-         {
             return new GameplayTagContainer(rhs);
-         }
 
          if (rhs.IsEmpty)
-         {
             new GameplayTagContainer(lhs);
-         }
 
          OrderedListUnion(lhs.Indices.Explicit, rhs.Indices.Explicit, union.m_Indices.Explicit);
          OrderedListUnion(lhs.Indices.Implicit, rhs.Indices.Implicit, union.m_Indices.Implicit);
@@ -402,15 +386,11 @@ namespace BandoWare.GameplayTags
 
          // If there are remaining elements in this container's explicit tags, they are considered added.
          for (; currentIndex < Indices.ExplicitTagCount; currentIndex++)
-         {
             added.Add(GameplayTagManager.GetDefinitionFromRuntimeIndex(currentContainerTagIndices[currentIndex]).Tag);
-         }
 
          // If there are remaining elements in the other container's explicit tags, they are considered removed.
          for (; otherIndex < otherIndices.ExplicitTagCount; otherIndex++)
-         {
             removed.Add(GameplayTagManager.GetDefinitionFromRuntimeIndex(otherContainerTagIndices[otherIndex]).Tag);
-         }
       }
 
       /// <summary>
@@ -466,9 +446,7 @@ namespace BandoWare.GameplayTags
          GameplayTagContainerIndices.Create(ref m_Indices);
          int index = BinarySearchUtility.Search(m_Indices.Explicit, tag.RuntimeIndex);
          if (index >= 0)
-         {
             return;
-         }
 
          m_Indices.Explicit.Insert(~index, tag.RuntimeIndex);
          AddImplicitTagsFor(tag);
@@ -478,18 +456,14 @@ namespace BandoWare.GameplayTags
       public void AddTags<T>(in T container) where T : IGameplayTagContainer
       {
          foreach (GameplayTag tag in container.GetExplicitTags())
-         {
             AddTag(tag);
-         }
       }
 
       /// <inheritdoc />
       public void RemoveTag(GameplayTag tag)
       {
          if (!m_Indices.IsCreated)
-         {
             return;
-         }
 
          int index = BinarySearchUtility.Search(m_Indices.Explicit, tag.RuntimeIndex);
          if (index < 0)
@@ -506,9 +480,7 @@ namespace BandoWare.GameplayTags
       public void RemoveTags<T>(in T other) where T : IGameplayTagContainer
       {
          if (!m_Indices.IsCreated)
-         {
             return;
-         }
 
          foreach (GameplayTag tag in other.GetExplicitTags())
          {
@@ -533,9 +505,7 @@ namespace BandoWare.GameplayTags
             GameplayTag parent = tags[i];
             int index = BinarySearchUtility.Search(m_Indices.Implicit, parent.RuntimeIndex);
             if (index >= 0)
-            {
                break;
-            }
 
             m_Indices.Implicit.Insert(~index, parent.RuntimeIndex);
          }
@@ -552,9 +522,7 @@ namespace BandoWare.GameplayTags
             foreach (GameplayTag tag in definition.HierarchyTags)
             {
                if (m_Indices.Implicit.Count > 0 && m_Indices.Implicit[^1] >= tag.RuntimeIndex)
-               {
                   continue;
-               }
 
                m_Indices.Implicit.Add(tag.RuntimeIndex);
             }
@@ -567,16 +535,12 @@ namespace BandoWare.GameplayTags
 
          m_SerializedExplicitTags.Clear();
          if (m_Indices.Explicit == null)
-         {
             return;
-         }
 
          foreach (GameplayTag tag in new GameplayTagEnumerator(m_Indices.Explicit))
          {
             if (tag == GameplayTag.None)
-            {
                continue;
-            }
 
             m_SerializedExplicitTags.Add(tag.Name);
          }
@@ -586,9 +550,7 @@ namespace BandoWare.GameplayTags
       {
          m_Indices = GameplayTagContainerIndices.Create();
          if (m_SerializedExplicitTags == null || m_SerializedExplicitTags.Count == 0)
-         {
             return;
-         }
 
          for (int i = 0; i < m_SerializedExplicitTags.Count;)
          {

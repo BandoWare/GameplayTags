@@ -36,9 +36,7 @@ namespace BandoWare.GameplayTags
       {
          bool hasAnyForbiddenTag = staticContainer.HasAny(m_ForbiddenTags) || dynamicContainer.HasAny(m_ForbiddenTags);
          if (hasAnyForbiddenTag)
-         {
             return false;
-         }
 
          return GameplayTagContainerUtility.HasAll(staticContainer, dynamicContainer, m_RequiredTags);
       }

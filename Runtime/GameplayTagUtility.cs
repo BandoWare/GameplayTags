@@ -14,9 +14,7 @@ namespace BandoWare.GameplayTags
       internal static void WarnNotExplicitTagsRemoval(GameplayTagEnumerator tags)
       {
          foreach (GameplayTag tag in tags)
-         {
             WarnNotExplictlyAddedTagRemoval(tag);
-         }
       }
 
       /// <summary>
@@ -40,9 +38,7 @@ namespace BandoWare.GameplayTags
                names[--level] = name;
 
                if (level == -1)
-               {
                   break;
-               }
             }
          }
 
@@ -88,9 +84,7 @@ namespace BandoWare.GameplayTags
 
          int indexOfPoint = name.LastIndexOf('.');
          if (indexOfPoint == -1)
-         {
             return name;
-         }
 
          return name[(indexOfPoint + 1)..];
       }
@@ -105,9 +99,7 @@ namespace BandoWare.GameplayTags
          static bool AcceptLabel(string name, ref int position)
          {
             if (position >= name.Length || !IsValidLabelCharacter(name[position]))
-            {
                return false;
-            }
 
             position++;
             while (position < name.Length && IsValidLabelCharacter(name[position]))
@@ -119,9 +111,7 @@ namespace BandoWare.GameplayTags
          }
 
          if (string.IsNullOrEmpty(name))
-         {
             throw new ArgumentException("Tag name cannot be null or empty.");
-         }
 
          int position = 0;
          if (AcceptLabel(name, ref position))
@@ -130,16 +120,12 @@ namespace BandoWare.GameplayTags
             {
                position++;
                if (!AcceptLabel(name, ref position))
-               {
                   throw new ArgumentException($"Invalid tag name '{name}'. Unexpected character at position {position}.");
-               }
             }
          }
 
          if (position == name.Length)
-         {
             return;
-         }
 
          throw new ArgumentException($"Invalid tag name '{name}'. Unexpected character at position {position}.");
       }

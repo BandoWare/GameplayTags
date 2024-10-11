@@ -57,9 +57,7 @@ namespace BandoWare.GameplayTags
             GameplayTagDefinition parentDefinition = Definition.ParentTagDefinition;
 
             if (parentDefinition == null)
-            {
                return None;
-            }
 
             return parentDefinition.Tag;
          }
@@ -113,14 +111,10 @@ namespace BandoWare.GameplayTags
       public override readonly bool Equals(object obj)
       {
          if (obj is GameplayTag other)
-         {
             return other.m_RuntimeIndex == m_RuntimeIndex;
-         }
 
          if (obj is string otherStr)
-         {
             return m_Name == otherStr;
-         }
 
          return false;
       }
@@ -133,9 +127,7 @@ namespace BandoWare.GameplayTags
       public override readonly string ToString()
       {
          if (m_RuntimeIndex == 0)
-         {
             return "<None>";
-         }
 
          return m_Name;
       }
@@ -180,9 +172,7 @@ namespace BandoWare.GameplayTags
       private readonly void ValidateIsNotNone()
       {
          if (m_RuntimeIndex == 0)
-         {
             throw new InvalidOperationException("Cannot perform operation on GameplayTag.None.");
-         }
       }
 
       public static implicit operator GameplayTag(string tagName)

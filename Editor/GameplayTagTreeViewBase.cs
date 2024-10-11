@@ -65,14 +65,10 @@ namespace BandoWare.GameplayTags.Editor
          GUILayout.BeginHorizontal(EditorStyles.toolbar);
 
          if (ToolbarButton("Expand All"))
-         {
             ExpandAll();
-         }
 
          if (ToolbarButton("Collapse All"))
-         {
             CollapseAll();
-         }
 
          OnToolbarGUI();
 
@@ -119,9 +115,7 @@ namespace BandoWare.GameplayTags.Editor
             }
 
             if (hideInEditor)
-            {
                continue;
-            }
 
             items.Add(new GameplayTagTreeViewItem(tag.RuntimeIndex, tag));
             m_IsEmpty = false;

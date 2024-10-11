@@ -47,14 +47,10 @@ namespace BandoWare.GameplayTags
       public void UnbindAll()
       {
          if (m_Binds == null)
-         {
             return;
-         }
 
          foreach (BindData bind in m_Binds)
-         {
             m_Container.RemoveTagEventCallback(bind.Tag, GameplayTagEventType.NewOrRemoved, bind.OnTagAddedOrRemved);
-         }
 
          m_Binds.Clear();
       }

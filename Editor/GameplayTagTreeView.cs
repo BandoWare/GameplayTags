@@ -23,9 +23,7 @@ namespace BandoWare.GameplayTags.Editor
          {
             GameplayTagTreeViewItem item = FindItem(tag.RuntimeIndex);
             if (item != null)
-            {
                SetSelection(new int[] { item.id });
-            }
 
             while (item != null)
             {

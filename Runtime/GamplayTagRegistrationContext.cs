@@ -14,9 +14,7 @@ namespace BandoWare.GameplayTags
          GameplayTagUtility.ValidateName(name);
 
          if (m_TagsByName.ContainsKey(name))
-         {
             return;
-         }
 
          GameplayTagDefinition definition = new(name, description, flags);
 
@@ -94,9 +92,7 @@ namespace BandoWare.GameplayTags
          {
             definition.SetChildren(children);
             foreach (GameplayTagDefinition child in children)
-            {
                child.SetParent(definition);
-            }
          }
       }
 
@@ -109,9 +105,7 @@ namespace BandoWare.GameplayTags
             List<GameplayTag> hierarcyTags = new();
 
             if (definition.ParentTagDefinition != null)
-            {
                hierarcyTags.AddRange(definition.ParentTagDefinition.HierarchyTags.ToArray());
-            }
 
             hierarcyTags.Add(definition.Tag);
             definition.SetHierarchyTags(hierarcyTags.ToArray());
@@ -121,9 +115,7 @@ namespace BandoWare.GameplayTags
       private void SetTagRuntimeIndices()
       {
          for (int i = 0; i < m_Definition.Count; i++)
-         {
             m_Definition[i].SetRuntimeIndex(i);
-         }
       }
    }
 }

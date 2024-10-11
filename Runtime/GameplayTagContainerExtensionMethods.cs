@@ -28,23 +28,17 @@ namespace BandoWare.GameplayTags
       private static bool HasAnyInternal(List<int> tagIndices, List<int> otherTagIndices)
       {
          if (otherTagIndices == null || otherTagIndices.Count == 0 || tagIndices == null || tagIndices.Count == 0)
-         {
             return false;
-         }
 
          int start = BinarySearchUtility.Search(tagIndices, otherTagIndices[0], 0, tagIndices.Count - 1);
          if (start >= 0)
-         {
             return true;
-         }
 
          start = ~start;
 
          int end = BinarySearchUtility.Search(tagIndices, otherTagIndices[^1], start, tagIndices.Count - 1);
          if (end >= 0)
-         {
             return true;
-         }
 
          end = ~end;
 
@@ -53,9 +47,7 @@ namespace BandoWare.GameplayTags
          while (i < end && j < otherTagIndices.Count)
          {
             if (otherTagIndices[j] == tagIndices[i])
-            {
                return true;
-            }
 
             if (tagIndices[i] > otherTagIndices[j])
             {
@@ -68,9 +60,7 @@ namespace BandoWare.GameplayTags
             {
                j++;
                if (j == end)
-               {
                   return false;
-               }
             }
          }
 
@@ -80,31 +70,21 @@ namespace BandoWare.GameplayTags
       private static bool HasAllInternal(List<int> tagIndices, List<int> otherTagIndices)
       {
          if (otherTagIndices == null || otherTagIndices.Count == 0)
-         {
             return true;
-         }
 
          if (tagIndices == null || tagIndices.Count == 0)
-         {
             return false;
-         }
 
          int start = BinarySearchUtility.Search(tagIndices, otherTagIndices[0], 0, tagIndices.Count - 1);
          if (start < 0)
-         {
             return false;
-         }
 
          if (otherTagIndices.Count == 1)
-         {
             return true;
-         }
 
          int end = BinarySearchUtility.Search(tagIndices, otherTagIndices[^1], 0, tagIndices.Count - 1);
          if (end < 0)
-         {
             return false;
-         }
 
          int j = 1;
          end--;
@@ -117,9 +97,7 @@ namespace BandoWare.GameplayTags
             }
 
             if (otherTagIndices[j] > tagIndices[i])
-            {
                return false;
-            }
          }
 
          return j == otherTagIndices.Count - 1;
@@ -133,19 +111,13 @@ namespace BandoWare.GameplayTags
       public static bool HasAll<T, U, V>(this T container, in U otherA, in V otherB) where T : IGameplayTagContainer where U : IGameplayTagContainer where V : IGameplayTagContainer
       {
          if (otherA.IsEmpty && otherB.IsEmpty)
-         {
             return true;
-         }
 
          if (otherA.IsEmpty)
-         {
             return HasAll(container, otherB);
-         }
 
          if (otherB.IsEmpty)
-         {
             return HasAll(container, otherA);
-         }
 
          using (GenericPool<GameplayTagContainer>.Get(out GameplayTagContainer intersection))
          {

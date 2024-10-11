@@ -23,18 +23,10 @@ namespace BandoWare.GameplayTags.Editor
       {
          SerializedProperty tagNamesProperty = property.FindPropertyRelative("m_SerializedExplicitTags");
          if (tagNamesProperty.hasMultipleDifferentValues)
-         {
             return (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 2;
-         }
 
          if (tagNamesProperty.arraySize > 0)
-         {
-            return Mathf.Max
-            (
-               tagNamesProperty.arraySize * EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
-               (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 2
-            );
-         }
+            return Mathf.Max(tagNamesProperty.arraySize * EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing, (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 2);
 
          return EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
       }
@@ -66,18 +58,12 @@ namespace BandoWare.GameplayTags.Editor
          EditorGUI.EndDisabledGroup();
 
          if (explicitTagsProperty.arraySize > 0)
-         {
             DrawClearAllButton(position, explicitTagsProperty);
-         }
 
          if (explicitTagsProperty.hasMultipleDifferentValues)
-         {
             OnMultipleValuesGUI(position, explicitTagsProperty);
-         }
          else
-         {
             OnAddedTagsGUI(position, explicitTagsProperty);
-         }
 
          EditorGUI.indentLevel = oldIndentLevel;
          EditorGUI.EndProperty();
@@ -99,9 +85,7 @@ namespace BandoWare.GameplayTags.Editor
       private static void OnAddedTagsGUI(Rect position, SerializedProperty explicitTagsProperty)
       {
          if (explicitTagsProperty.arraySize <= 0)
-         {
             return;
-         }
 
          Rect tagsRect = position;
          tagsRect.xMin += k_ButtonsWidth + k_Gap;
@@ -155,17 +139,13 @@ namespace BandoWare.GameplayTags.Editor
          );
 
          if (GUI.Button(clearButtonRect, "Clear All"))
-         {
             explicitTagsProperty.arraySize = 0;
-         }
       }
 
       private static void DrawOutline(Rect rect, Color color, float thickness = 1)
       {
          if (Event.current.type != EventType.Repaint)
-         {
             return;
-         }
 
          EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
          EditorGUI.DrawRect(new Rect(rect.x, rect.y + rect.height - thickness, rect.width, thickness), color);

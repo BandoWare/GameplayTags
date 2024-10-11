@@ -103,9 +103,7 @@ namespace BandoWare.GameplayTags.Editor
             {
                GameplayTagTreeViewItem parentItem = FindItem(parentTag.RuntimeIndex);
                if (parentItem == null)
-               {
                   continue;
-               }
 
                parentItem.IsIncluded = true;
             }
@@ -121,17 +119,13 @@ namespace BandoWare.GameplayTags.Editor
             GameplayTagTreeViewItem item = FindItem(tag.RuntimeIndex);
 
             if (item == null)
-            {
                continue;
-            }
 
             foreach (GameplayTag parentTag in tag.ParentTags)
             {
                GameplayTagTreeViewItem parentItem = FindItem(parentTag.RuntimeIndex);
                if (parentItem == null)
-               {
                   continue;
-               }
 
                SetExpanded(parentItem.id, true);
             }

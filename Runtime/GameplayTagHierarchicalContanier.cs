@@ -52,9 +52,7 @@ namespace BandoWare.GameplayTags
       public void Clear()
       {
          foreach (GameplayTag tag in GetExplicitTags())
-         {
             m_ParentContainer?.RemoveTag(tag);
-         }
 
          m_UnderlyingContainer.Clear();
       }
@@ -128,9 +126,7 @@ namespace BandoWare.GameplayTags
       public void RemoveTags<T>(in T other) where T : IGameplayTagContainer
       {
          foreach (GameplayTag tag in GetExplicitTags())
-         {
             m_ParentContainer?.RemoveTag(tag);
-         }
 
          m_UnderlyingContainer.RemoveTags(other);
       }

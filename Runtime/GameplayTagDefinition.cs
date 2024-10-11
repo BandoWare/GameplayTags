@@ -107,21 +107,15 @@ namespace BandoWare.GameplayTags
       public bool IsChildOf(GameplayTag tag)
       {
          if (RuntimeIndex <= tag.RuntimeIndex)
-         {
             return false;
-         }
 
          if (m_ParentTags.Length > 1 && tag.RuntimeIndex < m_ParentTags[0].RuntimeIndex)
-         {
             return false;
-         }
 
          for (int i = 0; i < m_ParentTags.Length; i++)
          {
             if (m_ParentTags[i] == tag)
-            {
                return true;
-            }
          }
 
          return false;
@@ -134,21 +128,15 @@ namespace BandoWare.GameplayTags
       public bool IsParentOf(GameplayTag tag)
       {
          if (RuntimeIndex >= tag.RuntimeIndex)
-         {
             return false;
-         }
 
          if (m_ChildTags.Length > 1 && tag.RuntimeIndex > m_ChildTags[^1].RuntimeIndex)
-         {
             return false;
-         }
 
          for (int i = 0; i < m_ChildTags.Length; i++)
          {
             if (m_ChildTags[i] == tag)
-            {
                return true;
-            }
          }
 
          return false;

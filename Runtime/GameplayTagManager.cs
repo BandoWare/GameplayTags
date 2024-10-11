@@ -57,9 +57,7 @@ namespace BandoWare.GameplayTags
       public static void InitializeIfNeeded()
       {
          if (s_IsInitialized)
-         {
             return;
-         }
 
          GamplayTagRegistrationContext context = new();
 
@@ -76,22 +74,20 @@ namespace BandoWare.GameplayTags
                   Debug.LogError($"Failed to register tag {attribute.TagName} from assembly {assembly.FullName} with error: {exception.Message}");
                }
             }
+
+            s_TagsDefinitions = context.GenerateDefinitions();
+
+            // Skip the first tag definition which is the "None" tag.
+            IEnumerable<GameplayTag> tags = s_TagsDefinitions
+               .Select(definition => definition.Tag)
+               .Skip(1);
+
+            s_Tags = Enumerable.ToArray(tags);
+            foreach (GameplayTagDefinition definition in s_TagsDefinitions)
+               s_TagDefinitionsByName[definition.TagName] = definition;
+
+            s_IsInitialized = true;
          }
-
-         s_TagsDefinitions = context.GenerateDefinitions();
-
-         // Skip the first tag definition which is the "None" tag.
-         IEnumerable<GameplayTag> tags = s_TagsDefinitions
-            .Select(definition => definition.Tag)
-            .Skip(1);
-
-         s_Tags = Enumerable.ToArray(tags);
-         foreach (GameplayTagDefinition definition in s_TagsDefinitions)
-         {
-            s_TagDefinitionsByName[definition.TagName] = definition;
-         }
-
-         s_IsInitialized = true;
       }
    }
 }

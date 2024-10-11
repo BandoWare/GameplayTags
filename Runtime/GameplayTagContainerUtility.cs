@@ -9,19 +9,13 @@ namespace BandoWare.GameplayTags
          where T : IGameplayTagContainer where U : IGameplayTagContainer where V : IGameplayTagContainer
       {
          if (containerA.IsEmpty && containerB.IsEmpty)
-         {
             return true;
-         }
 
          if (containerA.IsEmpty)
-         {
             return containerB.HasAll(other);
-         }
 
          if (containerB.IsEmpty)
-         {
             return containerA.HasAll(other);
-         }
 
          using (GenericPool<GameplayTagContainer>.Get(out GameplayTagContainer intersection))
          {
@@ -37,19 +31,13 @@ namespace BandoWare.GameplayTags
          where T : IGameplayTagContainer where U : IGameplayTagContainer where V : IGameplayTagContainer
       {
          if (containerA.IsEmpty && containerB.IsEmpty)
-         {
             return true;
-         }
 
          if (containerA.IsEmpty)
-         {
             return containerB.HasAllExact(other);
-         }
 
          if (containerB.IsEmpty)
-         {
             return containerA.HasAllExact(other);
-         }
 
          using (GenericPool<GameplayTagContainer>.Get(out GameplayTagContainer intersection))
          {
@@ -65,18 +53,14 @@ namespace BandoWare.GameplayTags
       {
          int index = tagIndices.BinarySearch(tag.RuntimeIndex);
          if (index < 0)
-         {
             index = ~index;
-         }
 
          for (int i = index - 1; i >= 0; i--)
          {
             GameplayTagDefinition otherTagDefinition = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
 
             if (!otherTagDefinition.IsParentOf(tag))
-            {
                break;
-            }
 
             parentTags.Add(otherTagDefinition.Tag);
          }
@@ -92,9 +76,7 @@ namespace BandoWare.GameplayTags
             GameplayTagDefinition otherTagDefinition = GameplayTagManager.GetDefinitionFromRuntimeIndex(tagIndices[i]);
 
             if (!otherTagDefinition.IsChildOf(tag))
-            {
                break;
-            }
 
             childTags.Add(otherTagDefinition.Tag);
          }
