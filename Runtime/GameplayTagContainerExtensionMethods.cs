@@ -47,24 +47,24 @@ namespace BandoWare.GameplayTags
          end = ~end;
 
          int j = 1;
-         int i = start + 1;
-         while (i < end && j < otherTagIndices.Count)
+         int i = start;
+         int otherLimit = otherTagIndices.Count - 1;
+
+         while (i < end && j < otherLimit)
          {
-            if (otherTagIndices[j] == tagIndices[i])
+            int tagVal = tagIndices[i];
+            int otherVal = otherTagIndices[j];
+
+            if (tagVal == otherVal)
                return true;
 
-            if (tagIndices[i] > otherTagIndices[j])
+            if (tagVal < otherVal)
             {
                i++;
-               continue;
             }
-
-            j++;
-            while (otherTagIndices[j] < tagIndices[i])
+            else
             {
                j++;
-               if (j == end)
-                  return false;
             }
          }
 
