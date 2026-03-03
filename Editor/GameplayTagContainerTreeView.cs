@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -39,6 +40,17 @@ namespace BandoWare.GameplayTags.Editor
          GameplayTagTreeViewItem item = args.item as GameplayTagTreeViewItem;
          bool added;
 
+         
+         if (IsSelected(item.id) && Event.current.keyCode == KeyCode.Return && Event.current.type == EventType.KeyUp)
+         {
+            if (!item.IsIncluded || !item.IsExplicitIncluded)
+               AddTag(item.Tag);
+            else
+               RemoveTag(item.Tag);
+            
+            Repaint(); // Have to repaint or the Toggle GUI is not updated accordingly
+         }
+         
          EditorGUI.BeginChangeCheck();
          EditorGUI.showMixedValue = item.IsIncluded && !item.IsExplicitIncluded;
          added = EditorGUI.Toggle(rect, s_TempContent, item.IsIncluded);

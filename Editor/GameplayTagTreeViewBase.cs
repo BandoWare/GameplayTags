@@ -83,6 +83,9 @@ namespace BandoWare.GameplayTags.Editor
          rowHeight = 24;
 
          Reload();
+         
+         m_SearchField.SetFocus();
+         m_SearchField.downOrUpArrowKeyPressed += SetFocusAndEnsureSelectedItem;
       }
 
       public override void OnGUI(Rect rect)

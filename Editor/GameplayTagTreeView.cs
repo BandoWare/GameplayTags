@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -69,6 +70,15 @@ namespace BandoWare.GameplayTags.Editor
 
          GameplayTagTreeViewItem item = args.item as GameplayTagTreeViewItem;
 
+         
+         if (IsSelected(item.id) && Event.current.keyCode == KeyCode.Return && Event.current.type == EventType.KeyUp)
+         {
+            m_TagNameProperty.stringValue = item.Tag.Name;
+            m_TagNameProperty.serializedObject.ApplyModifiedProperties();
+         
+            m_OnSelectionChange?.Invoke();
+         }
+         
          if (GUI.Button(rect, s_TempContent, EditorStyles.label))
          {
             m_TagNameProperty.stringValue = item.Tag.Name;
